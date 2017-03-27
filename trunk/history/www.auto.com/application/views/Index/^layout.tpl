@@ -60,12 +60,12 @@
  <!-- DATA TABLE SCRIPTS -->
 <script src="{{$options.sites.static}}/assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="{{$options.sites.static}}/assets/js/dataTables/dataTables.bootstrap.js"></script>
-    <script>
+<script>
         $(document).ready(function () {
             $('#dataTables-example').dataTable();
         });
 </script>
 <!-- Custom Js -->
-<script src="{{$options.sites.static}}/assets/js/custom-scripts.js"></script> 
+<!-- <script src="{{$options.sites.static}}/assets/js/custom-scripts.js"></script>  -->
 
 {{block name="script"}}{{/block}}

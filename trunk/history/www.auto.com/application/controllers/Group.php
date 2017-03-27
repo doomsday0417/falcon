@@ -26,16 +26,33 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        $powerModel = new Model_Power_Power();
+
+        $powers = $powerModel->getPowers();
+
+        $powers = $powers->toArray();
 
         if($this->_request->isPost()){
             $this->powerAuth('write', $this->_Class, 'json');
 
             $name = $this->getParam('name');
 
+            $power = array();
+
+            foreach ($powers as $v){
+
+                $power[] = array(
+                    'powerid' => $v['powerid'],
+                    'power' => $this->getParam($v['powerclass'], 0)
+                );
+            }
+
             $groupModel = new Model_User_Group();
 
             try {
-                $groupModel->addGroup($name);
+                $groupId = $groupModel->addGroup($name, $power);
+
+
             }catch (Model_Exception $e){
                 $this->json(false, $e->getMessage());
             }
@@ -46,17 +63,37 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
         $this->powerAuth('write', $this->_Class);
 
-        $powerModel = new Model_Power_Power();
 
-        $powers = $powerModel->getPowers();
 
-        print_r($powers);die;
+        $this->view->assign('powers', $powers);
 
     }
 
     public function editAction()
     {
         $groupId = (int) $this->getParam('groupid', 0);
+
+        try {
+            $model = new Model_User_Group();
+
+            $group = $model->getGroup($groupId);
+        }catch (Model_Exception $e){
+            if($this->_request->isPost()){
+                $this->json(false, $e->getMessage());
+            }else{
+                $this->jump('', $e->getMessage());
+            }
+        }
+
+        $powerModel = new Model_Power_Power();
+
+        $powers = $powerModel->getPowers();
+
+        $powers = $powers->toArray();
+
+        $groupPowerModel = new Model_Power_GroupPower();
+
+        $groupPowerModel->getPower($groupId);
 
         if($this->_request->isPost()){
             $this->powerAuth('write', $this->_Class, 'json');
@@ -66,14 +103,13 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
         $this->powerAuth('write', $this->_Class);
 
-        if(empty($groupId)){
-            $this->jump($this->_request->getServer('HTTP_REFERER'), '管理组ID不存在');
-        }
 
         $model = new Model_User_Group();
 
         $group = $model->getGroup($groupId);
 
-        $this->view->assign('group', $group->toArray());
+
+        $this->view->assign('group', $group->toArray())
+                   ->assign('powers', $powers);
     }
 }
