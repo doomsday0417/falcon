@@ -15,7 +15,14 @@
 
 class Dao_Power_GroupPower extends Aomp_Dao_Abstract
 {
+    private $_table = 'group_power';
 
+    /**
+     *
+     * @param array $condition
+     * @throws Aomp_Dao_Exception
+     * @return boolean|Aomp_Dao_Recordset
+     */
     public function getGroupPowers(array $condition)
     {
         if(empty($condition)){
@@ -38,7 +45,7 @@ class Dao_Power_GroupPower extends Aomp_Dao_Abstract
         $sql = <<<SQL
 SELECT {$columns}
 FROM `user_group` UG
-LEFT JOIN `group_power` GP ON UG.ID = GP.GroupID
+LEFT JOIN {$this->_table} GP ON UG.ID = GP.GroupID
 LEFT JOIN `power` P ON P.ID = GP.PowerID
 WHERE {$where} ORDER BY P.Sort desc
 SQL;
@@ -51,5 +58,27 @@ SQL;
         }
 
         return new Aomp_Dao_Recordset($rows, 'Dao_Power_Record_GroupPower');
+    }
+
+    /**
+     *
+     * @param array $param
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function addGroupPowers($param)
+    {
+        try {
+            $this->db->insert($this->_table, array(
+                'groupid' => $param['groupid'],
+                'powerid' => $param['powerid'],
+                'power'   => $param['power']
+            ));
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+
+        return true;
     }
 }

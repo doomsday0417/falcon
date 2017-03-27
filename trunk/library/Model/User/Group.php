@@ -27,7 +27,14 @@ class Model_User_Group extends Model_Abstract
     }
 
 
-    public function addGroup($name)
+    /**
+     *
+     * @param string $name
+     * @param array $powers
+     * @throws Model_Exception
+     * @return boolean|Ambigous <boolean, string>
+     */
+    public function addGroup($name, array $powers)
     {
         if(empty($name)){
             throw new Model_Exception('组名不能为空');
@@ -37,10 +44,20 @@ class Model_User_Group extends Model_Abstract
         /* @var $daoGroup Dao_User_Group */
         $daoGroup = $this->getDao('Dao_User_Group');
 
+        /* @var $daoGroupPower Dao_Power_GroupPower */
+        $daoGroupPower = $this->getDao('Dao_Power_GroupPower');
+
         try {
             $id = $daoGroup->addGroup(array(
                 'name' => $name
             ));
+
+            foreach ($powers as $v){
+                $v['groupid'] = $id;
+
+                $daoGroupPower->addGroupPowers($v);
+            }
+
         }catch (Aomp_Dao_Exception $e){
             throw new Model_Exception($e->getMessage());
             return false;
