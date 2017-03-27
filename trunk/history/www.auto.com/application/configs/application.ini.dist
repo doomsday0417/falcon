@@ -1,0 +1,60 @@
+[product]
+application.directory = APP_PATH
+application.dispatcher.displayExceptions = 1
+
+
+;加载公共类库
+application.library = WWW_ROOT "library"
+
+;模板文件扩展名
+application.view.ext = tpl
+
+; 模块列表
+application.modules = "Index"
+
+application.url_suffix = 'html'
+
+;smarty
+smarty.template_dir = APP_PATH "/views/"
+smarty.complie_dir  = CACHE_PATH "/128-www.auto.net/"
+smarty.autorender   = 0
+smarty.debugging = true
+
+;Sites
+
+
+;Key
+sites.sockey = 'auto.net'
+
+;Cookies
+cookies.account = _account_
+cookies.userid  = _uid_
+
+;Session
+session.name = "_s_id_"
+session.save_path = "tcp://192.168.106.128:11211"
+session.handler   = "memcache"
+session.cookie_domain = "yjiango.net"
+session.cookie_path   = "/"
+session.gc_maxlifetime = 1440
+
+
+;db
+db.yjgo.type = 'mysql'
+db.yjgo.host = 'localhost'
+db.yjgo.username = 'root'
+db.yjgo.password = 'root'
+db.yjgo.dbname = 'yjiango'
+db.yjgo.charset = 'UTF8'
+
+;memcache
+resources.memcache.site.adapter = "memcache"
+resources.memcache.site.host = "192.168.106.128"
+resources.memcache.site.port = 11211
+resources.memcache.site.default = 1
+
+;logs
+;resources.log.typename = 'db'
+resources.log.typename = 'text'
+resources.log.domain = 'www.yjiango.net'
+resources.log.path = LOG_PATH
