@@ -16,6 +16,14 @@
 class Model_User_User extends Model_Abstract
 {
 
+    /**
+     * 登陆
+     *
+     * @param string $account
+     * @param string $password
+     * @throws Model_Exception
+     * @return boolean
+     */
     public function login($account, $password)
     {
         if(empty($account) || empty($password)){
@@ -86,4 +94,78 @@ class Model_User_User extends Model_Abstract
 
         return true;
     }
+
+    /**
+     * 获取全部管理员
+     * @return array()
+     */
+    public function getUserAll()
+    {
+        $users = $this->memcache->get('users');
+
+        if(1){
+            /* @var $daoUser Dao_User_User */
+            $daoUser = $this->getDao('Dao_User_User');
+
+            try {
+                $users = $daoUser->getUserAll()->toArray();
+
+            }catch (Aomp_Dao_Exception $e){
+                throw new Model_Exception($e->getMessage());
+                return false;
+            }
+
+            $this->memcache->set('users', $users);
+        }
+
+        return $users;
+    }
+
+    public function addUser($param)
+    {
+        if(empty($param)){
+            throw new Model_Exception('信息不能为空');
+            return false;
+        }
+
+        //创建数组
+        $bind = array(
+            'account' => '',
+            'groupid' => 0,
+            'password' => '',
+            'name' => '',
+            'nick' => '',
+            'mobile' => '',
+            'email' => '',
+            'isdisabled' => 0
+        );
+
+        /* @var $daoUser Dao_User_User */
+        $daoUser = $this->getDao('Dao_User_User');
+
+        $error = null;
+
+        foreach ($bind as $k => $v){
+            switch ($k) {
+                case 'account':
+                    //查询账号是否存在
+                    $user = $daoUser->getUser(array('account' => $param[$k]));
+
+                    if(empty($param[$k])){
+                        $error = '账号不能为空';
+                        break 2;
+                    }
+
+                    if(empty($user->userId)){
+                        $error = '账号存在';
+                        break 2;
+                    }
+
+                    $bind[$k] = $param[$k];
+                    break;
+            }
+        }
+    }
+
+
 }

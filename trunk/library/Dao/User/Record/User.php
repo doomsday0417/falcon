@@ -30,6 +30,12 @@ class Dao_User_Record_User extends Aomp_Dao_Record
      *
      * @var string
      */
+    public $groupName;
+
+    /**
+     *
+     * @var string
+     */
     public $account;
 
     /**
@@ -52,7 +58,7 @@ class Dao_User_Record_User extends Aomp_Dao_Record
 
     /**
      *
-     * @var unknown
+     * @var email
      */
     public $email;
 
@@ -68,6 +74,12 @@ class Dao_User_Record_User extends Aomp_Dao_Record
      */
     public $isDisable;
 
+    /**
+     *
+     * @var time
+     */
+    public $createTime;
+
     public function __construct($record = array())
     {
 
@@ -75,6 +87,8 @@ class Dao_User_Record_User extends Aomp_Dao_Record
             $this->userId = $this->_toInt($record['userid']);
 
             $this->groupId = $this->_toInt($record['groupid']);
+
+            $this->groupName = empty($record['groupname']) ? '' : $this->_toString($record['groupname']);
 
             $this->account = $this->_toString($record['account']);
 
@@ -89,6 +103,8 @@ class Dao_User_Record_User extends Aomp_Dao_Record
             $this->mobile = $this->_toInt($record['mobile']);
 
             $this->isDisable = $this->_toBoolean($record['isdisable']);
+
+            $this->createTime = $this->_toTimestamp($record['createtime']);
         }
 
         parent::__construct();

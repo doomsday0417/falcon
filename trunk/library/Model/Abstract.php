@@ -15,11 +15,14 @@
 
 abstract class Model_Abstract
 {
-    public $session = '';
+    public $session;
+
+    public $memcache;
 
     public function __construct()
     {
         $this->session = Yaf_Session::getInstance();
+        $this->memcache = Aomp_Yaf_ResourceManager::getResource('memcache');
     }
 
     /**

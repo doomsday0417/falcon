@@ -96,6 +96,60 @@ SQL;
         }
     }
 
+    /**
+     *
+     * @param array $condition
+     * @param array $param
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function updatePower($condition, $param)
+    {
+        if(empty($condition) || !is_array($condition) || empty($param) || !is_array($param)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = array();
+        $bind = array();
+
+        if(isset($condition['powerid']) && is_int($condition['powerid'])){
+            $where[] = 'ID = ' . $condition['powerid'];
+        }
+
+        if(isset($param['name'])){
+            $bind['PowerName'] = $param['name'];
+        }
+
+        if(isset($param['powerclass'])){
+            $bind['PowerClass'] = $param['powerclass'];
+        }
+
+        if(isset($param['sort']) && is_int($param['sort'])){
+            $bind['Sort'] = $param['sort'];
+        }
+
+        if(empty($where) || empty($bind)){
+            throw new Aomp_Dao_Exception('数据不能为空');
+            return false;
+        }
+
+        try{
+            $this->db->update($this->_table, $bind, $where);
+
+            return true;
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param int $powerId
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
     public function deletePower($powerId)
     {
         try {

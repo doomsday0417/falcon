@@ -43,6 +43,12 @@ class Aomp_Yaf_ResourceManager
         }
     }
 
+    /**
+     *
+     * @param string $resource
+     * @throws Aomp_Exception
+     * @return boolean
+     */
     public static function getResource($resource)
     {
         if (!isset(self::$_resources[$resource])) {

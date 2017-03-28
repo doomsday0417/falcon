@@ -15,6 +15,7 @@
 
 class Dao_User_Group extends Aomp_Dao_Abstract
 {
+    private $_table = 'user_group';
 
     /**
      *
@@ -57,6 +58,11 @@ SQL;
             $bind['id'] = $condition['groupid'];
         }
 
+        if(isset($condition['name'])){
+            $where[] = 'name = :name';
+            $bind['name'] = $condition['name'];
+        }
+
         $where = implode(' AND ', $where);
 
         $sql = <<<SQL
@@ -88,6 +94,44 @@ SQL;
         }catch (Aomp_Db_Exception $e){
             throw new Aomp_Dao_Exception($e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     *
+     * @param int $groupId
+     * @param array $params
+     * @throws Aomp_Dao_Exception
+     * @return Ambigous <boolean, number>|boolean
+     */
+    public function editGroup($groupId, $params)
+    {
+        try {
+            return $this->db->update($this->_table, array('name' => $params['name']), array('groupid' => $groupId));
+
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteGroup($condition)
+    {
+        if(empty($condition) || !is_array($condition)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+        $where = array();
+
+        if(isset($condition['groupid']) && is_int($condition['groupid'])){
+            $where[] = 'id = ' . $condition['groupid'];
+        }
+
+        try {
+            $this->db->delete($this->_table, $where);
+            return true;
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
         }
     }
 }

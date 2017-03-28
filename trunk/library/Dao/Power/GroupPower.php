@@ -81,4 +81,37 @@ SQL;
 
         return true;
     }
+
+
+    /**
+     *
+     * @param array $condition
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function deleteGroupPowers($condition)
+    {
+        if( empty($condition) || !is_array($condition) ){
+            throw new Aomp_Dao_Exception('条件错误');
+            return false;
+        }
+
+        $where = array();
+
+        if(isset($condition['groupid']) && is_int($condition['groupid'])){
+            $where[] = 'groupid = ' . $condition['groupid'];
+        }
+
+        if(empty($where)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        try {
+            return $this->db->delete($this->_table, $where);
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
 }

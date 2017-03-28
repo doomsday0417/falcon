@@ -153,7 +153,7 @@ class Aomp_Db_Mysql
         $sql = 'DELETE FROM '
             .  $table
             .  ($where ? ' WHERE ' .$where : '');
-echo $sql;die;
+
         $stmt = $this->query($sql);
 
         $res = $stmt->rowCount();
