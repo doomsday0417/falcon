@@ -15,6 +15,7 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
     public function indexAction()
     {
+        //权限判断
         $this->powerAuth('read', $this->_Class);
 
         $model = new Model_Power_Power();
@@ -26,16 +27,22 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+
         if($this->_request->isPost()){
+
+            //权限判断
+            $this->powerAuth('write', $this->_Class, 'json');
 
             $powerName = $this->getParam('powername');
 
             $powerClass = $this->getParam('powerclass');
 
+            $sort = (int) $this->getParam('sort', 0);
+
             $model = new Model_Power_Power();
 
             try {
-                $id = $model->addPower($powerName, $powerClass);
+                $id = $model->addPower($powerName, $powerClass, $sort);
             }catch (Model_Exception $e){
                 $this->json(false, $e->getMessage());
             }
@@ -43,6 +50,8 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
             $this->json(true, '添加成功');
 
         }
+
+        $this->powerAuth('write', $this->_Class);
     }
 
     public function editAction()
@@ -50,14 +59,36 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
         $powerId = (int) $this->getParam('powerid', 0);
 
         $model = new Model_Power_Power();
-        $power = $model->getPower($powerId);
 
         if($this->_request->isPost()){
+            //权限判断
+            $this->powerAuth('write', $this->_Class, 'json');
 
+            $powerName = $this->getParam('powername');
+            $powerClass = $this->getParam('powerclass');
+            $sort = (int) $this->getParam('sort', 0);
+
+            try {
+                $model->editPower($powerId, array(
+                    'powername' => $powerName,
+                    'powerclass' => $powerClass,
+                    'sort' => $sort
+                ));
+
+                $this->json(true, '修改成功');
+            }catch (Model_Exception $e){
+                $this->json(false, $e->getMessage());
+            }
         }
 
+        //权限判断
+        $this->powerAuth('write', $this->_Class);
+
+
+        $power = $model->getPower($powerId);
+
         if(empty($power->powerId)){
-            $this->jump($this->_request->getServer('HTTP_REFERER'), '权限ID不存在');
+            $this->jump('/power.html', '权限ID不存在');
         }
 
         $this->view->assign('power', $power->toArray());
@@ -65,6 +96,7 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
     public function deleteAction()
     {
+        $this->powerAuth('delete', $this->_Class, 'json');
         $powerId = (int) $this->getParam('powerid', 0);
 
         $model = new Model_Power_Power();

@@ -63,7 +63,7 @@ $('form').submit(function(){
 $('.btn').on('click', function(){
 	var _this = $(this);
 	var form = $('form');
-	//_this.addClass('disabled');
+	_this.addClass('disabled');
 	$('#row-checkbox').find('input[type="hidden"]').each(function(){
 		var name = $(this).data('name');
 		var power = 0;
@@ -83,6 +83,7 @@ $('.btn').on('click', function(){
             alert(ret.message);
 			if(ret.success){
 				_this.removeClass('disabled');
+				location.reload();
 			}
 		}
 	})

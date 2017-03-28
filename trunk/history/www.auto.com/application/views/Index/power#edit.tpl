@@ -21,17 +21,17 @@
 								    <input type="hidden" name="powerid" value="{{$power.powerid}}" />
 									<div class="row">
 										<div class="input-field col s4">
-										    <input id="last_name" name="name" type="text" class="validate" value="{{$power.powername}}">
+										    <input id="last_name" name="powername" type="text" class="validate" value="{{$power.powername}}">
 										    <label for="last_name" class="active">权限名</label>
 										</div>
 										
 										<div class="input-field col s4">
-                                            <input id="last_name" name="name" type="text" class="validate" value="{{$power.powerclass}}">
+                                            <input id="last_name" name="powerclass" type="text" class="validate" value="{{$power.powerclass}}">
                                             <label for="last_name" class="active">权限类</label>
                                         </div>
                                         
                                         <div class="input-field col s4">
-                                            <input id="last_name" name="name" type="text" class="validate" value="{{$power.sort}}">
+                                            <input id="last_name" name="sort" type="text" class="validate" value="{{$power.sort}}">
                                             <label for="last_name" class="active">排序</label>
                                         </div>
 
@@ -72,8 +72,16 @@ $('.btn').on('click', function(){
 		dataType : 'json',
 		success  : function(ret){
             alert(ret.message);
+            _this.removeClass('disabled');
 			if(ret.success){
-				_this.removeClass('disabled');
+				switch(type){
+				    case 'delete' :
+				    	location.href = '/power.html';
+				    	break;
+				    default :
+				    	location.reload();
+				}
+				
 			}
 		}
 	})

@@ -33,15 +33,6 @@
                                         </div>
 									</div>
 
-		                           <div class="col">
-		                              <ul class="tabs">
-		                                <li class="tab col s3"><a href="#test1">Test 1</a></li>
-		                              </ul>
-		                            </div>
-		                            <div class="clearBoth"><br/></div>
-		                            <div id="test1" class="col s3"><p></p></div>
-		                           <div class="clearBoth"><br/></div>
-
 								</form>
 								<div class="clearBoth"><a class="waves-effect waves-light btn">添加</a></div>
                             </div>
@@ -77,6 +68,7 @@ $('.btn').on('click', function(){
             alert(ret.message);
 			if(ret.success){
 				_this.removeClass('disabled');
+				location.reload();
 			}
 		}
 	})
