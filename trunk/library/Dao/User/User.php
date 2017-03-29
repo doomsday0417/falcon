@@ -45,7 +45,8 @@ SQL;
     public function getUser($condition)
     {
         if(empty($condition)){
-            return array();
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
         }
 
         $where = array();
@@ -85,11 +86,77 @@ SQL;
         try {
             $row = $this->db->fetchRow($sql, $bind);
         }catch (Aomp_Dao_Exception $e){
-            return array();
             throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
         }
 
         return Aomp_Dao::record('Dao_User_Record_User', $row);
 
+    }
+
+    /**
+     *
+     * @param array $param
+     * @throws Aomp_Dao_Exception
+     * @return string|boolean
+     */
+    public function createUser($param)
+    {
+        try {
+            $this->db->insert($this->_table, $param);
+            return $this->db->lastInsertId();
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param array $condition
+     * @param array $param
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function updateUser($condition, $param)
+    {
+        if(empty($condition) || empty($param)){
+            throw new Aomp_Dao_Exception('数据不能为空');
+            return false;
+        }
+
+        $where = array();
+
+        if(isset($condition['userid']) && is_int($condition['userid'])){
+            $where[] = 'ID = '. $condition['userid'];
+        }
+
+        if(empty($where)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        try {
+            $this->db->update($this->_table, $param, $where);
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param int $userId
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function deleteUser($userId)
+    {
+        try {
+            return $this->db->delete($this->_table, array('ID = ' . $userId));
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
     }
 }

@@ -53,7 +53,7 @@ class Aomp_Function
      */
     public static function isMobile($value)
     {
-        if(!is_numeric($value) || $this->strLen($value) > 11){
+        if(!is_numeric($value) || self::strLen($value) > 11){
             return false;
         }
 

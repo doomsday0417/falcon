@@ -137,7 +137,7 @@ class Model_User_User extends Model_Abstract
             'nick' => '',
             'mobile' => '',
             'email' => '',
-            'isdisabled' => 0
+            'isdisable' => 0
         );
 
         /* @var $daoUser Dao_User_User */
@@ -146,24 +146,372 @@ class Model_User_User extends Model_Abstract
         $error = null;
 
         foreach ($bind as $k => $v){
+
             switch ($k) {
-                case 'account':
-                    //查询账号是否存在
-                    $user = $daoUser->getUser(array('account' => $param[$k]));
+                //账号
+                case 'account' :
 
-                    if(empty($param[$k])){
+                    if(empty($param['account'])){
                         $error = '账号不能为空';
-                        break 2;
+                        break;
                     }
 
-                    if(empty($user->userId)){
+                    if(Aomp_Function::strLen($param['account']) > 16){
+                        $error = '账号不能超过16位';
+                        break;
+                    }
+
+                    //查询账号是否存在
+                    $user = $daoUser->getUser(array('account' => $param['account']));
+
+                    if(!empty($user->userId)){
                         $error = '账号存在';
+                        break;
+                    }
+
+                    $bind['account'] = $param['account'];
+                    break;
+
+                //密码
+                case 'password' :
+
+                    //密码不能为空
+                    if(empty($param['account'])){
+                        $error = '密码不能为空';
                         break 2;
                     }
 
-                    $bind[$k] = $param[$k];
+                    $config = Yaf_Application::app()->getConfig();
+                    $key = $config->sites->sockey;
+
+                    $bind['password'] = Aomp_Function::md5($param['password'], $key);
+                    break;
+
+                //组
+                case 'groupid' :
+
+                    if(empty($param['groupid'])){
+                        $error = '组不存在';
+                        break 2;
+                    }
+                    /* @var $daoGroup Dao_User_Group */
+                    $daoGroup = $this->getDao('Dao_User_Group');
+
+                    $group = $daoGroup->getGroup(array('groupid' => $param['groupid']));
+
+                    if(empty($group->groupId)){
+                        $error = '该组不存在';
+                        break 2;
+                    }
+
+                    $bind['groupid'] = $group->groupId;
+                    break;
+
+                //姓名
+                case 'name' :
+
+                    if(empty($param['name'])){
+                        $error = '姓名不能为空';
+                        break 2;
+                    }
+
+                    $bind['name'] = $param['name'];
+                    break;
+
+                //昵称（可以空）
+                case 'nick' :
+
+                    if(empty($param['nick'])){
+                        break;
+                    }
+
+                    if(Aomp_Function::strLen($param['nick']) > 20){
+                        $error = '昵称不能超过20位';
+                        break 2;
+                    }
+
+                    $bind['nick'] = $param['nick'];
+                    break;
+
+                //邮箱
+                case 'email' :
+
+                    if(empty($param['email'])){
+                        $error = '邮箱不能为空';
+                        break 2;
+                    }
+
+                    if(!Aomp_Function::isEmail($param['email'])){
+                        $error = '邮箱不正确';
+                        break 2;
+                    }
+
+                    $bind['email'] = $param['email'];
+                    break;
+
+                //手机
+                case 'mobile' :
+
+                    if(empty($param['mobile'])){
+                        $error = '手机不能为空';
+                        break 2;
+                    }
+
+                    if(!Aomp_Function::isMobile($param['mobile'])){
+                        $error = '手机不正确';
+                        break 2;
+                    }
+
+                    $bind['mobile'] = $param['mobile'];
                     break;
             }
+        }
+
+        //错误返回
+        if(!empty($error)){
+            throw new Model_Exception($error);
+            return false;
+        }
+
+        try {
+            $userId = $daoUser->createUser($bind);
+
+            $this->memcache->delete('users');
+            return $userId;
+        }catch (Aomp_Dao_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param array $condition
+     * @throws Model_Exception
+     * @return boolean|Dao_User_Record_User
+     */
+    public function getUser($condition)
+    {
+        if(empty($condition)){
+            throw new Model_Exception('条件不能为空');
+            return false;
+        }
+
+        /* @var $daoUser Dao_User_User */
+        $daoUser = $this->getDao('Dao_User_User');
+
+        try {
+            $user = $daoUser->getUser($condition);
+
+            if(empty($user->userId)){
+                throw new Model_Exception('账号不存在');
+                return false;
+            }
+
+            return $user;
+        }catch (Aomp_Dao_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
+        }
+
+    }
+
+    public function editUser($condition, $param)
+    {
+        if(empty($condition) || empty($param)){
+            throw new Model_Exception('数据不能为空');
+            return false;
+        }
+
+        $where = array();
+
+        //创建数组
+        $bind = array(
+            'account' => '',
+            'groupid' => 0,
+            'password' => '',
+            'name' => '',
+            'nick' => '',
+            'mobile' => '',
+            'email' => ''
+        );
+
+        /* @var $daoUser Dao_User_User */
+        $daoUser = $this->getDao('Dao_User_User');
+
+        if(isset($condition['userid']) && is_int($condition['userid'])){
+            $where['userid'] = $condition['userid'];
+        }
+
+        try {
+            $user = $daoUser->getUser($where);
+
+
+            $error = null;
+
+            foreach ($bind as $k => $v){
+
+                switch ($k) {
+                    //账号
+                    case 'account' :
+
+                        if(empty($param['account'])){
+                            $error = '账号不能为空';
+                            break;
+                        }
+
+                        if(Aomp_Function::strLen($param['account']) > 16){
+                            $error = '账号不能超过16位';
+                            break;
+                        }
+
+                        //查询账号是否存在
+                        $user = $daoUser->getUser(array('account' => $param['account']));
+
+                        if(!empty($user->userId)){
+                            $error = '账号存在';
+                            break;
+                        }
+
+                        $bind['account'] = $param['account'] == $user->account ? $user->account : $param['account'];
+                        break;
+
+                        //密码
+                    case 'password' :
+
+                        //允许密码为空，因为有可能不是修改密码
+                        if(empty($param['password'])){
+                            $bind['password'] = $user->password;
+                            break;
+                        }
+
+                        $config = Yaf_Application::app()->getConfig();
+                        $key = $config->sites->sockey;
+
+                        $bind['password'] = Aomp_Function::md5($param['password'], $key) == $user->password ? $user->password : Aomp_Function::md5($param['password'], $key);
+
+                        break;
+
+                        //组
+                    case 'groupid' :
+
+                        if(empty($param['groupid'])){
+                            $error = '组不存在';
+                            break 2;
+                        }
+
+                        /* @var $daoGroup Dao_User_Group */
+                        $daoGroup = $this->getDao('Dao_User_Group');
+
+                        $group = $daoGroup->getGroup(array('groupid' => $param['groupid']));
+
+                        if(empty($group->groupId)){
+                            $error = '该组不存在';
+                            break 2;
+                        }
+
+                        $bind['groupid'] = $group->groupId;
+                        break;
+
+                        //姓名
+                    case 'name' :
+
+                        if(empty($param['name'])){
+                            $error = '姓名不能为空';
+                            break 2;
+                        }
+
+                        $bind['name'] = $param['name'] == $user->name ? $user->name : $param['name'];
+                        break;
+
+                        //昵称（可以空）
+                    case 'nick' :
+
+                        if(empty($param['nick'])){
+                            break;
+                        }
+
+                        if(Aomp_Function::strLen($param['nick']) > 20){
+                            $error = '昵称不能超过20位';
+                            break 2;
+                        }
+
+                        $bind['nick'] = $param['nick'] == $user->nick ? $user->nick : $param['nick'];
+                        break;
+
+                        //邮箱
+                    case 'email' :
+
+                        if(empty($param['email'])){
+                            $error = '邮箱不能为空';
+                            break 2;
+                        }
+
+                        if(!Aomp_Function::isEmail($param['email'])){
+                            $error = '邮箱不正确';
+                            break 2;
+                        }
+
+                        $bind['email'] = $param['email'] == $user->email ? $user->email : $param['email'];
+                        break;
+
+                        //手机
+                    case 'mobile' :
+
+                        if(empty($param['mobile'])){
+                            $error = '手机不能为空';
+                            break 2;
+                        }
+
+                        if(!Aomp_Function::isMobile($param['mobile'])){
+                            $error = '手机不正确';
+                            break 2;
+                        }
+
+                        $bind['mobile'] = $param['mobile'] == $user->mobile ? $user->mobile : $param['mobile'];
+                        break;
+                }
+            }
+
+            //错误返回
+            if(!empty($error)){
+                throw new Model_Exception($error);
+                return false;
+            }
+
+            return $daoUser->updateUser($where, $bind);
+
+        }catch (Aomp_Dao_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
+        }
+
+    }
+
+    public function deleteUser($userId)
+    {
+        /* @var $daoUser Dao_User_User */
+        $daoUser = $this->getDao('Dao_User_User');
+
+        try {
+            $user = $daoUser->getUser(array('userid' => $userId));
+
+            if(empty($user->userId)){
+                throw new Model_Exception('管理员不存在');
+                return false;
+            }
+
+            $row = $daoUser->deleteUser($user->userId);
+
+            if(!$row){
+                throw new Model_Exception('删除失败');
+                return false;
+            }
+
+            return true;
+        }catch (Aomp_Dao_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
         }
     }
 

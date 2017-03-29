@@ -6,7 +6,7 @@
                 <h1 class="page-header">{{$classname}}</h1>
                 <ol class="breadcrumb">
                     <li><a href="/group.html">{{$classname}}</a></li>
-                    <li><a>添加</a></li>
+                    <li><a>编辑</a></li>
                 </ol> 
             </div>
 
@@ -41,7 +41,7 @@
                                     </div>
 								</form>
 								<div class="clearBoth">
-								    <a class="waves-effect waves-light btn">修改</a>
+								    <a data-type="edit" class="waves-effect waves-light btn">修改</a>
 								    <a data-type="delete" class="waves-effect waves-light btn btn-danger">删除</a>
 								</div>
 								

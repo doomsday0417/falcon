@@ -65,7 +65,7 @@
 {{block name=script}}
 <script>
 $('tbody').find('tr').on('click', function(){
-    var groupid = $(this).data('groupid')
+    var userid = $(this).data('userid')
     
     location.href = '/user/edit.html?userid=' + userid;
 })
