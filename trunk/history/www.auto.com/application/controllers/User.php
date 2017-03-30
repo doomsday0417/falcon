@@ -13,7 +13,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
 
     public function indexAction()
     {
-        $this->powerAuth('read', $this->_Class);
+        $this->powerAuth('read');
 
         //用户Model
         $model = new Model_User_User();
@@ -35,7 +35,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
     {
         if($this->_request->isPost()){
             //权限判断
-            $this->powerAuth('write', $this->_Class, 'json');
+            $this->powerAuth('write');
 
             $account = $this->getParam('account');
             $groupId = (int) $this->getParam('groupid');
@@ -66,7 +66,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
         }
 
         //权限判断
-        $this->powerAuth('write', $this->_Class);
+        $this->powerAuth('write');
 
         $groupModel = new Model_User_Group();
 
@@ -75,13 +75,16 @@ class UserController extends Aomp_Yaf_Controller_Abstract
         $this->view->assign('groups', $groups);
     }
 
+    /**
+     * 编辑
+     */
     public function editAction()
     {
         $userId = (int) $this->getParam('userid');
 
         if($this->_request->isPost()){
             //权限判断
-            $this->powerAuth('write', $this->_Class, 'json');
+            $this->powerAuth('write', 'json');
 
             $account = $this->getParam('account');
             $groupId = (int) $this->getParam('groupid');
@@ -111,7 +114,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
         }
 
         //权限判断
-        $this->powerAuth('write', $this->_Class);
+        $this->powerAuth('write');
 
         $userModel = new Model_User_User();
 
@@ -134,7 +137,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
 
     public function deleteAction()
     {
-        $this->powerAuth('delete', $this->_Class);
+        $this->powerAuth('delete');
 
         $userId = (int) $this->getParam('userid');
 
@@ -143,11 +146,29 @@ class UserController extends Aomp_Yaf_Controller_Abstract
         try {
             $model->deleteUser($userId);
         }catch (Model_Exception $e){
-            $this->json(false, $e->getMessage());
+            $this->jump('', $e->getMessage());
         }
 
-        $this->json(true, '删除成功');
+        $this->jump('/user.html', '删除成功');
+    }
 
+    public function disableAction()
+    {
+        $this->powerAuth('write');
+
+        $userId = (int) $this->getParam('userid', 0);
+
+        $isDisable = (int) $this->getParam('disable', 0);
+
+        $model = new Model_User_User();
+
+        try {
+            $user = $model->disableUser($userId, $isDisable);
+        }catch (Model_Exception $e){
+            $this->jump('', $e->getMessage());
+        }
+
+        $this->jump('', '修改成功');
     }
 
 }

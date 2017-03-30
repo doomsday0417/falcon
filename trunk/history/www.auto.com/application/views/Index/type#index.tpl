@@ -1,8 +1,5 @@
 {{extends file="^layout.tpl"}}
 {{block name="content"}}
-<style>
-.dataTables_filter{display:none;}
-</style>
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div class="header"> 
@@ -16,28 +13,23 @@
                         <!-- Advanced Tables -->
                         <div class="card">
                             <div class="card-content">
-                                <a style="margin:10px 0px;" class="btn-floating" href="/power/add.html"><i class="material-icons">add</i></a>
+                                <a style="margin:10px 0px;" class="btn-floating" href="/type/add.html"><i class="material-icons">add</i></a>
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <table class="table table-striped table-bordered table-hover"">
                                         <thead>
                                             <tr>
-                                                <th>主机ID</th>
-                                                <th>类型</th>
+                                                <th>类型ID</th>
                                                 <th>创建者</th>
-                                                <th>管理者</th>
-                                                <th>主机名</th>
-                                                <th>主机IP</th>
-                                                <th>是否禁用</th>
+                                                <th>类型</th>
                                                 <th>创建时间</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{foreach from=$powers item=item}}
-                                            <tr class="odd gradeX" style="cursor:pointer;" data-powerid="{{$item.powerid}}">
-                                                <td>{{$item.powerid}}</td>
-                                                <td>{{$item.powername}}</td>
-                                                <td>{{$item.powerclass}}</td>
-                                                <td>{{$item.sort}}</td>
+                                            {{foreach from=$types item=item}}
+                                            <tr class="odd gradeX" style="cursor:pointer;" data-typeid="{{$item.typeid}}">
+                                                <td>{{$item.typeid}}</td>
+                                                <td>{{$item.username}}</td>
+                                                <td>{{$item.typename}}</td>
                                                 <td>{{$item.createtime|date_format:'%Y-%m-%d'}}</td>
                                             </tr>
                                             {{/foreach}}
@@ -62,11 +54,10 @@
 {{/block}}
 {{block name=script}}
 <script>
-
 $('tbody').find('tr').on('click', function(){
-    var powerid = $(this).data('powerid')
-    
-    location.href = '/power/edit.html?powerid=' + powerid;
+	var typeid = $(this).data('typeid')
+	
+	location.href = '/type/edit.html?typeid=' + typeid;
 })
 </script>
 {{/block}}

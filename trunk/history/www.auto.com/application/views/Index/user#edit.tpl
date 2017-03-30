@@ -17,7 +17,7 @@
                         <!-- Advanced Tables -->
                         <div class="card">
 							<div class="card-content">
-								<form class="col s12" action="/user/add.html" method="post">
+								<form class="col s12" action="/user/edit.html" method="post">
 								    <input type="hidden" name="userid" value="{{$root.userid}}" />
 									<div class="row">
 										<div class="input-field col s6">
@@ -55,8 +55,8 @@
 								</form>
 								<div class="clearBoth">
 								    <a data-type="edit" class="waves-effect waves-light btn">添加</a>
-								    <a data-type="delete" class="waves-effect waves-light btn btn-danger">删除</a>
-								    <a data-type="disabled" class="waves-effect waves-light btn btn-danger">禁止</a>
+								    <a data-type="delete" href="/user/delete.html?userid={{$root.userid}}" class="waves-effect waves-light btn btn-danger">删除</a>
+								    <a data-type="disabled" href="/user/disable.html?userid={{$root.userid}}&disable={{if $root.isdisable}}0{{else}}1{{/if}}" class="waves-effect waves-light btn btn-danger">{{if $root.isdisable}}解除{{else}}禁止{{/if}}</a>
 								</div>
                             </div>
                         </div>
@@ -80,16 +80,12 @@ $('form').submit(function(){
 $('.btn').on('click', function(){
 	var _this = $(this);
 	var type = _this.data('type');
-	var form = $('form');
-	var url;
-	if(type == 'delete'){
-		url = '/user/delete.html';
-	}else if(type == 'edit'){
-		url = form.attr('action')
-	}else if(type == 'disabled'){
-		url = '/user/disabled.html';
+
+	if(type != 'edit'){
+		location.href = _this.attr('href');
+		return false;
 	}
-	
+	var form = $('form');
 	_this.addClass('disabled');
 
 	$.ajax({

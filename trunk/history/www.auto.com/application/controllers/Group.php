@@ -18,7 +18,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
      */
     public function indexAction()
     {
-        $this->powerAuth('read', $this->_Class);
+        $this->powerAuth('read');
 
         $groupModel = new Model_User_Group();
 
@@ -41,7 +41,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
         //POST流程
         if($this->_request->isPost()){
-            $this->powerAuth('write', $this->_Class, 'json');
+            $this->powerAuth('write', 'json');
 
             $name = $this->getParam('name');
 
@@ -68,7 +68,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
         }
 
         //GET流程
-        $this->powerAuth('write', $this->_Class);
+        $this->powerAuth('write');
 
         $this->view->assign('powers', $powers);
 
@@ -97,7 +97,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
         //POST流程
         if($this->_request->isPost()){
-            $this->powerAuth('write', $this->_Class, 'json');
+            $this->powerAuth('write', 'json');
 
             $name = $this->getParam('name');
 
@@ -123,7 +123,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
         }
 
         //GET流程
-        $this->powerAuth('write', $this->_Class);
+        $this->powerAuth('write');
 
         //根据组ID获取数据
         try {
@@ -146,7 +146,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
     public function deleteAction()
     {
         if($this->_request->isPost()){
-            $this->powerAuth('delete', $this->_Class, 'json');
+            $this->powerAuth('delete', 'json');
 
             $groupId = (int) $this->getParam('groupid');
 

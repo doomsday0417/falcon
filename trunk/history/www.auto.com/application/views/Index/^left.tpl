@@ -2,7 +2,7 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
             {{foreach from=$user.power item=item}}
-                <li><a href="/{{$item.powerclass}}.html" class="waves-effect waves-dark"><i class="fa fa-tasks fa-fw"></i>{{$item.powername}}</a></li>
+                <li><a href="/{{$item.powerclass}}.html" class="waves-effect waves-dark"><i class="fa fa-qrcode fa-fw"></i>{{$item.powername}}</a></li>
             {{/foreach}}
             <!-- <li><a href="ui-elements.html" class="waves-effect waves-dark"><i class="fa fa-desktop"></i> UI Elements</a></li>
             <li><a href="chart.html" class="waves-effect waves-dark"><i class="fa fa-bar-chart-o"></i> Charts</a></li>
