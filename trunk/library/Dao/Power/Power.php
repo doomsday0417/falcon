@@ -86,7 +86,8 @@ SQL;
         try {
             $this->db->insert($this->_table, array(
                 'PowerName' => $params['powername'],
-                'PowerClass' => $params['powerclass']
+                'PowerClass' => $params['powerclass'],
+                'Sort' => $params['sort']
             ));
 
             return $this->db->lastInsertId();

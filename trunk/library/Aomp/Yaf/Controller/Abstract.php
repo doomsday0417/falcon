@@ -20,7 +20,17 @@ class Aomp_Yaf_Controller_Abstract extends Yaf_Controller_Abstract
         'delete' => 1
     );
 
+    /**
+     *
+     * @var int
+     */
     protected $_userPower;
+
+    /**
+     *
+     * @var int
+     */
+    protected $_userId;
 
     /**
      *
@@ -57,6 +67,8 @@ class Aomp_Yaf_Controller_Abstract extends Yaf_Controller_Abstract
                 }
                 exit;
             }
+
+            $this->_userId = $this->user->userId;
 
             $this->_userPower = $this->user->power[$this->_Class];
 

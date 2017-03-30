@@ -15,9 +15,9 @@
 
 abstract class Model_Abstract
 {
-    public $session;
+    protected $session;
 
-    public $memcache;
+    protected $memcache;
 
     public function __construct()
     {

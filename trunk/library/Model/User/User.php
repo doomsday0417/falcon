@@ -488,6 +488,12 @@ class Model_User_User extends Model_Abstract
 
     }
 
+    /**
+     *
+     * @param int $userId
+     * @throws Model_Exception
+     * @return boolean
+     */
     public function deleteUser($userId)
     {
         /* @var $daoUser Dao_User_User */
@@ -513,6 +519,33 @@ class Model_User_User extends Model_Abstract
             throw new Model_Exception($e->getMessage());
             return false;
         }
+    }
+
+    /**
+     *
+     * @param int $userId
+     * @param int $isDisable
+     * @throws Model_Exception
+     * @return boolean
+     */
+    public function disableUser($userId, $isDisable)
+    {
+
+        try {
+
+            $user = $this->getUser(array('userid' => $userId));
+
+            $daoUser = $this->getDao('Dao_User_User');
+
+            $daoUser->updateUser(array('userid' => $user->userId), array('isdisable' => $isDisable));
+
+            return true;
+        }catch (Aomp_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
+        }
+
+
     }
 
 

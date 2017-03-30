@@ -212,15 +212,13 @@ class Aomp_Db_Mysql
             $bind = array($bind);
         }
 
-        try {
-            $stmt = $this->prepare($sql);
-            $stmt->execute($bind);
-            $stmt->setFetchMode($this->_fetchMode);
-            return $stmt;
-        }catch (PDOException $e){
-            throw new Aomp_Db_Exception($e->getMessage());
-            return false;
-        }
+
+        $stmt = $this->prepare($sql);
+
+        $stmt->execute($bind);
+        $stmt->setFetchMode($this->_fetchMode);
+        return $stmt;
+
 
     }
 
