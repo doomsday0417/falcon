@@ -1,5 +1,5 @@
 # falcon
-The project is developed with PHP YAF framework and python
+这个项目是一个自动化运维平台，由PHP加Python共同开发
 
 
 #现在框架是用YAF
