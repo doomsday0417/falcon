@@ -19,7 +19,7 @@
                                         <thead>
                                             <tr>
                                                 <th>类型ID</th>
-                                                <th>创建者</th>
+                                                <th>编辑者</th>
                                                 <th>类型</th>
                                                 <th>创建时间</th>
                                             </tr>

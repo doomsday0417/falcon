@@ -48,4 +48,42 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
         $this->powerAuth('write');
     }
 
+    public function editAction()
+    {
+        $typeId = ($this->getParam('typeid', 0));
+
+        $model = new Model_Remote_Type();
+
+        if($this->_request->isPost()){
+            $this->powerAuth('write', 'json');
+
+            $typeName = $this->getParam('name');
+
+            try {
+
+                $model->editType($typeId, array('name' => $typeName, 'userid' => $this->_userId));
+
+                $this->json(true, '修改成功');
+            }catch (Model_Exception $e){
+                $this->json(false, $e->getMessage());
+            }
+        }
+
+        //权限
+        $this->powerAuth('write');
+
+
+        try {
+
+            $type = $model->getType($typeId);
+
+        }catch (Model_Exception $e){
+            $this->jump('', $e->getMessage());
+        }
+
+
+        $this->view->assign('type', $type);
+
+    }
+
 }

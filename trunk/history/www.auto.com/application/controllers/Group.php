@@ -112,7 +112,7 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
             }
 
             try {
-                $model->editGroup($groupId, array('name' => $name, 'powers' => $power));
+                $model->editGroup($groupId, array('name' => $name, 'powers' => $power, 'userid' => $this->_userId));
             }catch (Model_Exception $e){
                 $this->json(false, $e->getMessage());
             }
