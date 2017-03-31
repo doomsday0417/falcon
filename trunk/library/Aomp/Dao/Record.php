@@ -20,6 +20,7 @@ class Aomp_Dao_Record
     const TYPE_FLOAT  = 2;
     const TYPE_TIME   = 3;
     const TYPE_BOOL   = 4;
+    const TYPE_IP     = 5;
 
     /**
      * 保存字段数据
@@ -98,6 +99,8 @@ class Aomp_Dao_Record
                     $value = strtotime($value);
                 }
                 break;
+            case self::TYPE_IP:
+                $value = long2ip($value);
             default:
                 break;
         }
@@ -158,6 +161,17 @@ class Aomp_Dao_Record
     protected function _toBoolean($value)
     {
         return $this->_formatField($value, self::TYPE_BOOL);
+    }
+
+    /**
+     * To ip
+     *
+     * @param int $value
+     * @return string
+     */
+    protected function _toIp($value)
+    {
+        return $this->_formatField($value, self::TYPE_IP);
     }
 
     /**

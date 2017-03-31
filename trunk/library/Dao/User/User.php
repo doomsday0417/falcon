@@ -72,6 +72,11 @@ SQL;
             $bind['id']  = $condition['userid'];
         }
 
+        if(empty($condition)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
 
         $where = implode(' AND ', $where);
 

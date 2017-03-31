@@ -17,6 +17,10 @@ abstract class Model_Abstract
 {
     protected $session;
 
+    /**
+     *
+     * @var Aomp_Application_Resource_Memcache
+     */
     protected $memcache;
 
     public function __construct()
@@ -32,7 +36,7 @@ abstract class Model_Abstract
      * @param mixed $db
      * @return Aomp_Dao_Abstract
      */
-    public function getDao($className, $db = null)
+    protected function getDao($className, $db = null)
     {
         return Aomp_Dao::factory($className, $db);
     }

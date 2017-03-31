@@ -132,7 +132,7 @@ class Aomp_User
 
         $user = $memcache->get('user_' . $userId);
 
-        if(1){
+        if(empty($user)){
             $user = $daoUser->getUser(array('userid' => $userId));
 
             /* @var $daoGroupPower Dao_Power_GroupPower */

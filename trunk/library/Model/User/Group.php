@@ -151,6 +151,7 @@ class Model_User_Group extends Model_Abstract
             }
 
             $this->memcache->delete('groups');
+            $this->memcache->delete('user_' . $param['userid']);
             return true;
 
         }catch (Aomp_Dao_Exception $e){
