@@ -165,4 +165,29 @@ class GroupController extends Aomp_Yaf_Controller_Abstract
 
         }
     }
+
+    /**
+     * 获取组管理员方法
+     */
+    public function getMemberAction()
+    {
+        if($this->_request->isPost()){
+            $groupId = (int) $this->getParam('groupid', 0);
+
+            try {
+                $model = new Model_User_Group();
+
+                $group = $model->getGroup($groupId);
+
+                $model = new Model_User_User();
+
+                $users = $model->getUsers(array('groupid' => $group->groupId));
+
+                $this->json(true, '获取成功', $users);
+
+            }catch (Model_Exception $e){
+                $this->json(false, $e->getMessage());
+            }
+        }
+    }
 }

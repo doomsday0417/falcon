@@ -43,18 +43,13 @@
                                         <div style="padding:0px 20px 20px 0px;border:none;" class="card-action">管理者</div>
                                         
                                         {{foreach $groups as $key => $item}}
-                                                <input name="groupid" type="radio" checked id="group_{{$item.groupid}}" value="{{$item.groupid}}">
+                                                <input name="groupid" type="radio" id="group_{{$item.groupid}}" value="{{$item.groupid}}">
                                                 <label data-btn="radio" for="group_{{$item.groupid}}">{{$item.name}}</label>
                                         {{/foreach}}
                                         
                                         <div id="group-user">
                                             <p>
-                                                <input type="checkbox" id="{{$item.powerclass}}_read" value="4" />
-                                                <label for="{{$item.powerclass}}_read">Read</label>
-                                                <input type="checkbox" id="{{$item.powerclass}}_write" value="2" />
-                                                <label for="{{$item.powerclass}}_write">Write</label>
-                                                <input type="checkbox" id="{{$item.powerclass}}_delete" value="1" />
-                                                <label for="{{$item.powerclass}}_delete">Delete</label>
+                                                
                                             </p>
                                         </div>
                                             
@@ -123,7 +118,31 @@
         
         var groupid = _this.val();
         
-        
+        $.ajax({
+            type : 'post',
+            url  : '/group/getmember.html',
+            data : {groupid : groupid},
+            dataType : 'json',
+            success  : function(ret){
+                var html = '';
+                
+                if(ret.success){
+                    $.each(ret.data, function(i, v){
+                    
+                        html += '<input name="userid" type="checkbox" id="user_' + v.userid + '" value="' + v.userid + '" /><label for="user_' + v.userid + '">' + v.name + '</label>';
+                    
+                    });
+
+                }
+                
+                $('#group-user').find('p').html(html);
+
+                
+            }
+            
+            
+            
+        });
     });
 
 
