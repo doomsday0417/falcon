@@ -92,7 +92,7 @@ class Dao_User_Record_User extends Aomp_Dao_Record
 
             $this->account = $this->_toString($record['account']);
 
-            $this->password = $this->_toString($record['password']);
+            $this->password = empty($record['password']) ? '' : $this->_toString($record['password']);
 
             $this->nick = $this->_toString($record['nick']);
 

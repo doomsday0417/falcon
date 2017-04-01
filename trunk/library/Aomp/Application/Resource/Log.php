@@ -44,6 +44,10 @@ class Aomp_Application_Resource_Log
 
     public $_path;
 
+    /**
+     *
+     * @param array $options
+     */
     public function init($options)
     {
         $this->_typeName = $options['typename'];
@@ -58,7 +62,7 @@ class Aomp_Application_Resource_Log
             case self::TYPE_NAME_DB :
 
                 /* @var $daoLog Dao_System_Log */
-                $daoLog = Yjgo_Dao::factory('Dao_System_Log', 'log');
+                $daoLog = Aomp_Dao::factory('Dao_System_Log', 'log');
 
                 $id = $daoLog->addLog($this->_domain, $message, $class, $severity);
 

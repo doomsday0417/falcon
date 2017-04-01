@@ -122,7 +122,7 @@ class Aomp_Db_Mysql
         $vals = array();
 
         foreach ($bind as $k => $v) {
-            $cols[] = $k;
+            $cols[] = '`' . $k . '`';
             $vals[] = ':' . $k;
             unset($bind[$k]);
             $bind[':' . $k] = $v;

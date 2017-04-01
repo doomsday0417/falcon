@@ -37,6 +37,7 @@ SQL;
     }
 
     /**
+     * 获取单个管理员
      *
      * @param array $condition
      * @throws Aomp_Dao_Exception
@@ -85,7 +86,7 @@ SQL;
 
 
         $sql = <<<SQL
-SELECT {$columns} FROM {$this->_table} where {$where}
+SELECT {$columns} FROM {$this->_table} where {$where} LIMIT 1
 SQL;
 
         try {
@@ -97,6 +98,49 @@ SQL;
 
         return Aomp_Dao::record('Dao_User_Record_User', $row);
 
+    }
+
+
+    public function getUsers($condition)
+    {
+        if(empty($condition)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = array();
+        $bind  = array();
+
+        if(isset($condition['groupid']) && is_int($condition['groupid'])){
+            $where[] = 'GroupID = :groupid';
+            $bind['groupid'] = $condition['groupid'];
+        }
+
+        if(empty($where)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = implode(' AND ', $where);
+
+        $columns = 'ID AS userid, GroupID AS groupid, Account AS account, Nick AS nick, Name AS name, Mobile AS mobile, '
+            . 'Email AS email, IsDisable AS isdisable, CreateTime AS createtime';
+
+
+        $sql = <<<SQL
+SELECT {$columns} FROM {$this->_table} WHERE {$where}
+SQL;
+
+        try {
+
+            $rows = $this->db->fetchAll($sql, $bind);
+
+            return new Aomp_Dao_Recordset($rows, 'Dao_User_Record_User');
+
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
     }
 
     /**

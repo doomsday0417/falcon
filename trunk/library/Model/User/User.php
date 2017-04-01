@@ -285,6 +285,7 @@ class Model_User_User extends Model_Abstract
     }
 
     /**
+     * 获取单个管理员Model
      *
      * @param array $condition
      * @throws Model_Exception
@@ -316,6 +317,46 @@ class Model_User_User extends Model_Abstract
 
     }
 
+    /**
+     * 获取多个管理员Model
+     *
+     * @param array $condition
+     * @throws Model_Exception
+     * @return boolean|Dao_User_Record_User
+     */
+    public function getUsers($condition)
+    {
+        if(empty($condition)){
+            throw new Model_Exception('条件不能为空');
+            return false;
+        }
+
+        /* @var $daoUser Dao_User_User */
+        $daoUser = $this->getDao('Dao_User_User');
+
+        try {
+            $users = $daoUser->getUsers($condition)->toArray();
+
+            if(empty($users)){
+                throw new Model_Exception('没有管理员');
+                return false;
+            }
+
+            return $users;
+        }catch (Aomp_Dao_Exception $e){
+            throw new Model_Exception($e->getMessage());
+            return false;
+        }
+
+    }
+
+    /**
+     *
+     * @param array $condition
+     * @param array $param
+     * @throws Model_Exception
+     * @return boolean
+     */
     public function editUser($condition, $param)
     {
         if(empty($condition) || empty($param)){
