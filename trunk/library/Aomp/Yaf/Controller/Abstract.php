@@ -89,9 +89,9 @@ class Aomp_Yaf_Controller_Abstract extends Yaf_Controller_Abstract
 
         $name = $this->_request->get($name);
 
-        $name = Aomp_Function::trim($name);
-
         if(empty($name) || is_array($name)) return $default;
+
+        $name = Aomp_Function::trim($name);
 
         $name = Aomp_Function::replace($name);
 

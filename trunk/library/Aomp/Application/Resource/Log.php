@@ -55,7 +55,7 @@ class Aomp_Application_Resource_Log
         $this->_path = isset($options['path']) ? $options['path'] : null;
     }
 
-    public function setLog($message, $class = null, $severity = self::INFO)
+    public function setLog($message, $severity = self::INFO)
     {
         //区分LOG的方式
         switch ($this->_typeName){
@@ -64,7 +64,7 @@ class Aomp_Application_Resource_Log
                 /* @var $daoLog Dao_System_Log */
                 $daoLog = Aomp_Dao::factory('Dao_System_Log', 'log');
 
-                $id = $daoLog->addLog($this->_domain, $message, $class, $severity);
+                $id = $daoLog->addLog($this->_domain, $message, $severity);
 
                 return $id;
 
