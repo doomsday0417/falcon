@@ -25,6 +25,12 @@
 										</div>
 
 									</div>
+									<div class="row">
+	                                    <input name="type" type="radio" checked id="type_server" value="server">
+	                                    <label for="type_server">服务器</label>
+	                                    <input name="type" type="radio" id="type_db" value="db">
+	                                    <label for="type_db">数据库</label>
+                                    </div>
 								</form>
 								<div class="clearBoth"><a class="waves-effect waves-light btn">添加</a></div>
                             </div>

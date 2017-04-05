@@ -19,6 +19,9 @@
                             <div class="card-content">
                                 <form class="col s12" action="/index/edit.html" method="post">
                                     <input type="hidden" name="remoteid" value="{{$remote.remoteid}}" />
+                                    {{foreach from=$admins item=val}}
+                                        <input type="hidden" name="admins[]" data-admin="{{$val.userid}}" value="{{$val.userid}}" />
+                                    {{/foreach}}
                                     <div class="row">
                                         <div class="input-field col s6">
                                             <input id="last_name" name="name" type="text" class="validate" value="{{$remote.name}}">
@@ -49,10 +52,12 @@
                                         
                                         <div id="group-user">
                                             <p>
-                                                
+                                                {{foreach from=$users item=item}}
+		                                            <input style="display:none" data-groupid="{{$item.groupid}}" {{if !empty($admins[$item.userid])}}checked{{/if}} name="userid[]" type="checkbox" id="user_{{$item.userid}}" value="{{$item.userid}}" />
+		                                            <label style="display:none" data-groupid="{{$item.groupid}}" for="user_{{$item.userid}}">{{$item.name}}</label>
+	                                            {{/foreach}}
                                             </p>
                                         </div>
-                                            
 
                                     </div>
                                 </form>
@@ -118,35 +123,11 @@
         
         var groupid = _this.val();
         
-        $.ajax({
-            type : 'post',
-            url  : '/group/getmember.html',
-            data : {groupid : groupid},
-            dataType : 'json',
-            success  : function(ret){
-                var html = '';
-                
-                if(ret.success){
-                    $.each(ret.data, function(i, v){
-                    
-                        html += '<input name="userid" type="checkbox" id="user_' + v.userid + '" value="' + v.userid + '" /><label for="user_' + v.userid + '">' + v.name + '</label>';
-                    
-                    });
-
-                }
-                
-                $('#group-user').find('p').html(html);
-
-                
-            }
-            
-            
-            
-        });
+        $('[data-groupid]').hide();
+        
+        $('[data-groupid="' + groupid + '"]').show();
     });
 
-
-	
 	
 
 

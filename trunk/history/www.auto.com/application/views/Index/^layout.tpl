@@ -65,7 +65,6 @@
             $('#dataTables-example').dataTable();
         });
 </script>
-<!-- Custom Js -->
-<script src="{{$options.sites.static}}/assets/js/custom-scripts.js"></script> 
+
 
 {{block name="script"}}{{/block}}

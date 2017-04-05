@@ -17,20 +17,33 @@
                         <!-- Advanced Tables -->
                         <div class="card">
                             <div class="card-content">
-                                <form class="col s12" action="/index/add.html" method="post">
+                                <form class="col s12" action="/db/add.html" method="post">
                                     <div class="row">
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s4">
                                             <input id="last_name" name="name" type="text" class="validate">
-                                            <label for="last_name">主机名</label>
+                                            <label for="last_name">数据库名</label>
                                         </div>
 
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s4">
                                             <input id="last_name" name="ip" type="text" class="validate">
                                             <label for="last_name">IP</label>
+                                        </div>
+                                        
+                                        <div class="input-field col s4">
+                                            <input id="last_name" name="port" type="text" class="validate">
+                                            <label for="last_name">端口</label>
                                         </div>
                                     </div>
                                     
                                     <div class="row">
+                                        <div style="padding:0px 20px 20px 0px;border:none;" class="card-action">所属主机</div>
+                                        {{foreach $remotes as $key => $item}}
+                                                <input name="remoteid" type="radio" id="remote_{{$item.remoteid}}" value="{{$item.remoteid}}">
+                                                <label for="remote_{{$item.remoteid}}">{{$item.name}}</label>
+                                        {{/foreach}}
+                                    </div>
+                                    <div class="row">
+                                        <div style="padding:0px 20px 20px 0px;border:none;" class="card-action">类型</div>
                                         {{foreach $types as $key => $item}}
                                                 <input name="typeid" type="radio" id="type_{{$item.typeid}}" value="{{$item.typeid}}">
                                                 <label for="type_{{$item.typeid}}">{{$item.typename}}</label>

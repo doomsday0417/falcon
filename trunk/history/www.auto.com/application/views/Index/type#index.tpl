@@ -21,6 +21,7 @@
                                                 <th>类型ID</th>
                                                 <th>编辑者</th>
                                                 <th>类型</th>
+                                                <th>名称</th>
                                                 <th>创建时间</th>
                                             </tr>
                                         </thead>
@@ -29,6 +30,7 @@
                                             <tr class="odd gradeX" style="cursor:pointer;" data-typeid="{{$item.typeid}}">
                                                 <td>{{$item.typeid}}</td>
                                                 <td>{{$item.username}}</td>
+                                                <td>{{if $item.type == 'server'}}服务器{{elseif $item.type == 'db'}}数据库{{/if}}</td>
                                                 <td>{{$item.typename}}</td>
                                                 <td>{{$item.createtime|date_format:'%Y-%m-%d'}}</td>
                                             </tr>

@@ -35,13 +35,22 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
             $typeId = (int) $this->getParam('typeid');
 
+            $userIds = $this->_request->getPost('userid');
+
             $userId = $this->_userId;
 
 
             try {
                 $model = new Model_Remote_Remote();
 
-                $model->addRemote(array('typeid' => $typeId, 'name' => $name, 'userid' => $userId, 'ip' => $ip));
+                $model->addRemote(array(
+                    'typeid' => $typeId,
+                    'name' => $name,
+                    'userid' => $userId,
+                    'ip' => $ip,
+                    'userids' => $userIds
+
+                ));
 
                 $this->json(true, '添加成功');
 
@@ -55,9 +64,19 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
         $typeModel = new Model_Remote_Type();
 
-        $types = $typeModel->getTypeAll();
+        $types = $typeModel->getTypes(array('type' => 'server'));
 
-        $this->view->assign('types', $types);
+        $model = new Model_User_Group();
+
+        $groups = $model->getGroups();
+
+        //读取全部管理员信息
+        $model = new Model_User_User();
+        $users = $model->getUserAll();
+
+        $this->view->assign('types', $types)
+                   ->assign('groups', $groups)
+                   ->assign('users', $users);
     }
 
     public function editAction()
@@ -66,12 +85,19 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
         $model = new Model_Remote_Remote();
 
+        //POST流程
         if($this->_request->isPost()){
             $this->powerAuth('write', 'json');
 
             $name = $this->getParam('name');
 
             $typeId = (int) $this->getParam('typeid', 0);
+
+            $userIds = $this->_request->getPost('userid');
+
+            foreach ($userIds as $k => $v){
+                $userIds[$k] = Aomp_Function::replace($v);
+            }
 
             $ip = $this->getParam('ip');
 
@@ -80,7 +106,8 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
                     'name' => $name,
                     'typeid' => $typeId,
                     'ip' => $ip,
-                    'userid' => $this->_userId
+                    'userid' => $this->_userId,
+                    'userids' => $userIds
                 ));
 
                 $this->json(true, '修改成功');
@@ -90,20 +117,35 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
         }
 
+        //GET流程
         $this->powerAuth('write');
 
         try {
 
 
+            //读取主机信息
             $remote = $model->getRemote(array('remoteid' => $remoteId));
 
+            //读取类型信息
             $typeModel = new Model_Remote_Type();
 
-            $types = $typeModel->getTypeAll();
+            $types = $typeModel->getTypes(array('type' => 'server'));
 
+            //读取组信息
             $model = new Model_User_Group();
 
             $groups = $model->getGroups();
+
+            //读取全部管理员信息
+            $model = new Model_User_User();
+            $users = $model->getUserAll();
+
+            //读取主机管理员信息
+            $adminModel = new Model_Remote_Admin();
+
+            $admins = $adminModel->getAdmins(array(
+                'remoteid' => $remote->remoteId
+            ));
 
         }catch (Model_Exception $e){
             $this->jump('/index.html', $e->getMessage());
@@ -111,7 +153,9 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
         $this->view->assign('remote', $remote->toArray())
                    ->assign('types', $types)
-                   ->assign('groups', $groups);
+                   ->assign('groups', $groups)
+                   ->assign('admins', $admins)
+                   ->assign('users', $users);
     }
 
     public function deleteAction()

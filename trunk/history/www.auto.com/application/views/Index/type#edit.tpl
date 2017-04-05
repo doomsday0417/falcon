@@ -24,8 +24,14 @@
 										    <input id="last_name" name="name" type="text" class="validate" value="{{$type.typename}}" />
 										    <label for="last_name" class="active">类型</label>
 										</div>
-
+										
 									</div>
+									<div class="row">
+                                        <input name="type" type="radio" {{if $type.type == 'server'}}checked{{/if}} id="type_server" value="server">
+                                        <label for="type_server">服务器</label>
+                                        <input name="type" type="radio" {{if $type.type == 'db'}}checked{{/if}} id="type_db" value="db">
+                                        <label for="type_db">数据库</label>
+                                    </div>
 								</form>
 								<div class="clearBoth">
 								    <a class="waves-effect waves-light btn">修改</a>

@@ -34,10 +34,12 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
 
             $name = $this->getParam('name');
 
+            $type = $this->getParam('type');
+
             $model = new Model_Remote_Type();
 
             try {
-                $model->addType($this->_userId, $name);
+                $model->addType($this->_userId, $name, $type);
             }catch (Model_Exception $e){
                 $this->json(false, $e->getMessage());
             }
@@ -59,9 +61,11 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
 
             $typeName = $this->getParam('name');
 
+            $type = $this->getParam('type');
+
             try {
 
-                $model->editType($typeId, array('name' => $typeName, 'userid' => $this->_userId));
+                $model->editType($typeId, array('name' => $typeName, 'userid' => $this->_userId, 'type' => $type));
 
                 $this->json(true, '修改成功');
             }catch (Model_Exception $e){
