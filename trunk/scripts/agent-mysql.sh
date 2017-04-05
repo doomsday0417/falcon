@@ -38,7 +38,7 @@ else if ($2 ~ /Table_locks_wait /){lock_wait=$3;}
 else if ($2 ~ /Uptime / && count >= 2)
 	{
 		
-		data = "http://128-api.auto.net/db/?ip=""'$server_ip'"
+		data = "'$url'""/db/?ip=""'$server_ip'"
 		data = data"&send_time="strftime("%Y-%m-%d %H:%M:%S")"&select="com_select"&insert="com_insert
 		data = data"&update="com_update"&delete="com_delete"&innodb_rows_read="innodb_rows_read
 		data = data"&innodb_rows_inserted="innodb_rows_inserted"&innodb_rows_updated="innodb_rows_updated
@@ -48,13 +48,11 @@ else if ($2 ~ /Uptime / && count >= 2)
 		data = data"&handler_write="write"&innodb_data_fsyncs="fsyncs"&innodb_data_reads="reads"&innodb_data_writes="writes
 		data = data"&table_locks_immediate="lock_imme"&table_locks_wait="(lock_wait?lock_wait:0)
 		
-		#data = "'$url'""/db?"data
-		#curl -s 'data'
-		#print("\""data"\"")
-		#a = "\""data"\""
-		#print(data)
-		print("完成一次")
-		curl -s "http://128-api.auto.net/db/?ip=192.168.106.128&send_time=2017-04-01 18:15:45&select= 0           &insert= 0           &update= 0           &delete= 0           &innodb_rows_read= 0           &innodb_rows_inserted= 0           &innodb_rows_updated= 0           &innodb_rows_deleted= 0           &innodb_lor= 0           &innodb_phr= 0           &client= 0           &conn= 0           &tmp_disk_tables= 0           &tmp_files= 0           &tmp_tables= 1           &handler_delete= 0           &handler_read_key= 0           &handler_read_rnd= 342         &handler_update= 0           &handler_write= 341         &innodb_data_fsyncs= 0           &innodb_data_reads= 0           &innodb_data_writes= 0           &table_locks_immediate= 0           &table_locks_wait=0"
+		cmd = "curl -s ""\"" data "\""
+		
+		system(cmd)
+		#print("完成一次")
+		
 		#print("'$url'""/db?"data)
 		#printf(" %s |%9d",strftime("%H:%M:%S"),queries);
 		#printf("|%6d %6d %6d %6d",com_select,com_insert,com_update,com_delete);
