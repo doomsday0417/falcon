@@ -27,7 +27,28 @@ class DbController extends Aomp_Yaf_Controller_Abstract
     {
         $this->powerAuth('read');
 
-        $model = new Model_Remote_Dba();
+        $dbId = (int) $this->getParam('dbid', 0);
+
+        $end = date('Y-m-d H:i:s', time());
+        $start = date('Y-m-d H:i:s', strtotime('-1 hour'));
+
+        $model = new Model_Remote_Db();
+
+        try {
+            $db = $model->getDb(array('dbid' => $dbId));
+
+            $model = new Model_Remote_Dba();
+
+            $datas = $model->getDba(array('remoteid' => $db->remoteId, 'start' => $start, 'end' => $end));
+
+        }catch (Model_Exception $e){
+            $this->jump('/db.html', $e->getMessage());
+        }
+
+        $this->view->assign('db', $db->toArray())
+                   ->assign('data', $datas['data'])
+                   ->assign('y', $datas['y']);
+
     }
 
     public function addAction()

@@ -38,8 +38,17 @@
 {{/block}}
 {{block name=script}}
 <!-- Custom Js -->
-<script src="{{$options.sites.static}}/aomp/js/db-chart-1.0.0.source.js"></script> 
+<script src="{{$options.sites.static}}/aomp/js/db-chart-1.1.0.source.js"></script> 
 <script>
+$(function(){
+	var options = [];
+	options.data = {{$data|@json_encode}};
+	options.y = {{$y|@json_encode}};
+	options.type = 'line';
+
+	$('#morris-area-chart').mainApp(options);
+})
+
 
 </script>
 {{/block}}
