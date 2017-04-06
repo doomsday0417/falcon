@@ -30,7 +30,8 @@ class DbController extends Aomp_Yaf_Controller_Abstract
         $dbId = (int) $this->getParam('dbid', 0);
 
         $end = date('Y-m-d H:i:s', time());
-        $start = date('Y-m-d H:i:s', strtotime('-1 hour'));
+        //-30 minute, -1 hour
+        $start = date('Y-m-d H:i:s', strtotime('-10 minute'));
 
         $model = new Model_Remote_Db();
 
@@ -46,8 +47,21 @@ class DbController extends Aomp_Yaf_Controller_Abstract
         }
 
         $this->view->assign('db', $db->toArray())
-                   ->assign('data', $datas['data'])
-                   ->assign('y', $datas['y']);
+                    //select
+                   ->assign('select', $datas['select'])
+                   ->assign('select_y', $datas['select_y'])
+                   //innodb
+                   ->assign('innodb', $datas['innodb'])
+                   ->assign('innodb_y', $datas['innodb_y'])
+                   //tmp
+                   ->assign('tmp', $datas['tmp'])
+                   ->assign('tmp_y', $datas['tmp_y'])
+                   //handler
+                   ->assign('handler', $datas['handler'])
+                   ->assign('handler_y', $datas['handler_y'])
+                   //item
+                   ->assign('item', $datas['item'])
+                   ->assign('item_y', $datas['item_y']);
 
     }
 
