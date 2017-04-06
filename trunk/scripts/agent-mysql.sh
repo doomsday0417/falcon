@@ -5,7 +5,7 @@ url='http://128-api.auto.net'
  
 
 #MySQL状态监控TPS
-/usr/local/mysql/bin/mysqladmin -uroot -p123456 -r -i 2 extended-status |awk -F "|" 'BEGIN { count=0; }
+/usr/local/mysql/bin/mysqladmin -uroot -p123456 -r -i 10 extended-status |awk -F "|" 'BEGIN { count=0; }
 { if($2 ~ /Variable_name/ && ++count%15==1)
 	{print "----------|---------|--- MySQL Command Status --|----- Innodb row operation -----|-- Buffer Pool Read -----------|- abort_conn-|---Create Tmp files or tables -----|------------ Handler --------------|Innodb pending data|--- table  locks---";
 	print "---Time---|---QPS---|select insert update delete|   read inserted updated deleted|   logical    physical---| client conn |tmp_disk_table tmp_files tmp_tables|dele read_key read_rnd update write|fsync  reads  write|lock_imme lock_wait";} 
