@@ -24,7 +24,7 @@ class Dao_Remote_Dba extends Aomp_Dao_Abstract
      * @throws Aomp_Dao_Exception
      * @return array|boolean
      */
-    public function getDba($condition)
+    public function getDbas($condition)
     {
         $where = array();
         $bind  = array();
@@ -59,13 +59,13 @@ class Dao_Remote_Dba extends Aomp_Dao_Abstract
                  . 'TableLocksImmediate AS tablelockstmmediate, TableLocksWait AS tablelockswait, SendTime AS sendtime, Remarks AS remarks, CreateTime AS createtime ';
 
         $sql = <<<SQL
-SELECT {$columns} FROM {$this->_table} WHERE {$where}
+SELECT {$columns} FROM {$this->_table} WHERE {$where} ORDER BY CreateTime asc
 SQL;
 
         try {
             $rows = $this->db->fetchAll($sql, $bind);
 
-            return new Aomp_Dao_Recordset($rows, 'Dao_Remote_Record_Dba');
+            return $rows;
         }catch (Aomp_Db_Exception $e){
             throw new Aomp_Dao_Exception($e->getMessage());
             return false;
