@@ -29,9 +29,12 @@ class DbController extends Aomp_Yaf_Controller_Abstract
 
         $dbId = (int) $this->getParam('dbid', 0);
 
-        $end = date('Y-m-d H:i:s', time());
         //-30 minute, -1 hour
-        $start = date('Y-m-d H:i:s', strtotime('-10 minute'));
+        $start = $this->getParam('start') ? $this->getParam('start') : date('Y-m-d H:i:s', strtotime('-30 minute'));
+
+        $end = $this->getParam('end') ? $this->getParam('end') : date('Y-m-d H:i:s', time());
+
+
 
         $model = new Model_Remote_Db();
 
@@ -41,6 +44,10 @@ class DbController extends Aomp_Yaf_Controller_Abstract
             $model = new Model_Remote_Dba();
 
             $datas = $model->getDba(array('remoteid' => $db->remoteId, 'start' => $start, 'end' => $end));
+
+            $threadModel = new Model_Remote_Thread();
+
+            $threads = $threadModel->getThreads(array('remoteid' => $db->remoteId, 'start' => $start, 'end' => $end));
 
         }catch (Model_Exception $e){
             $this->jump('/db.html', $e->getMessage());
@@ -61,7 +68,10 @@ class DbController extends Aomp_Yaf_Controller_Abstract
                    ->assign('handler_y', $datas['handler_y'])
                    //item
                    ->assign('item', $datas['item'])
-                   ->assign('item_y', $datas['item_y']);
+                   ->assign('item_y', $datas['item_y'])
+                   //thread
+                   ->assign('thread', $threads['data'])
+                   ->assign('thread_y', $threads['y']);
 
     }
 
