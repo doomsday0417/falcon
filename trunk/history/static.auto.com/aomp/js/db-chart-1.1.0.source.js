@@ -19,20 +19,6 @@
     		
     	},
     	
-    	map: function () {
-            /* MORRIS AREA CHART
-			----------------------------------------*/
-            Morris.Area({
-                element: id,
-                data : data,
-                xkey : 'y',
-                ykeys : y,
-                labels : y,
-                pointSize : 2,
-                hideHover : 'auto',
-                resize: true
-            });
-    	},
     	
     	line : function(){
     		Morris.Line({
@@ -48,11 +34,8 @@
     	
     	type : function(){
 
-    		if(type == 'line'){
-    			this.line();
-    		}else{
-    			this.map();
-    		}
+    		this.line();
+
     	}
     });
 
