@@ -4,7 +4,7 @@ class DbController extends Aomp_Yaf_Controller_Api
 {
     public function indexAction()
     {
-        $data = $this->getRequest()->getRequest();
+        $data = $this->_request->getRequest();
 
 
         $dbModel = new Model_Remote_Dba();
@@ -18,6 +18,23 @@ class DbController extends Aomp_Yaf_Controller_Api
         }
 
         $this->json(true, '接收成功');
+
+    }
+
+    public function threadAction()
+    {
+        $data = $this->_request->getRequest();
+
+        $threadModel = new Model_Remote_Thread();
+
+
+        try {
+            $threadModel->addThread($data);
+
+            $this->json(true, '添加成功');
+        }catch (Model_Exception $e){
+            $this->json(false, $e->getMessage());
+        }
 
     }
 }

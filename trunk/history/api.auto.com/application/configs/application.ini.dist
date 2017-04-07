@@ -1,0 +1,54 @@
+[product]
+application.directory = APP_PATH
+application.dispatcher.displayExceptions = 1
+
+
+;加载公共类库
+application.library = WWW_ROOT "library"
+
+
+
+; 模块列表
+application.modules = "Index"
+
+
+
+;Sites
+sites.static = 'http://128-static.auto.net'
+
+
+;Key
+sites.sockey = 'auto.com'
+
+;Cookies
+cookies.account = _account_
+cookies.userid  = _uid_
+
+;Session
+session.name = "_s_id_"
+session.save_path = "tcp://192.168.106.128:11311"
+session.save_handler   = "memcache"
+session.cookie_domain = "auto.net"
+session.cookie_path   = "/"
+session.gc_maxlifetime = 1440
+
+
+;db
+db.aomp.type = 'mysql'
+db.aomp.host = 'localhost'
+db.aomp.username = 'root'
+db.aomp.password = '123456'
+db.aomp.dbname = 'aomp'
+db.aomp.charset = 'UTF8'
+
+;memcache
+resources.memcache.site.adapter = "memcache"
+resources.memcache.site.host = "192.168.106.128"
+resources.memcache.site.port = 11211
+resources.memcache.site.default = 1
+
+;logs
+;resources.log.typename = 'db'
+resources.log.typename = 'text'
+resources.log.domain = '128-api.auto.net'
+resources.log.path = LOG_PATH
