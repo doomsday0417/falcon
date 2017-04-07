@@ -103,8 +103,7 @@ class Dao_Remote_Record_Dba extends Aomp_Dao_Record
             $this->tmpFiles = $this->_toInt($record['tmpfiles']);
             $this->handlerDelete = $this->_toInt($record['handlerdelete']);
             $this->handlerReadKey = $this->_toInt($record['handlerreadkey']);
-            $this->dbaId = $this->_toInt($record['handlerreadrnd']);
-            $this->handlerReadRnd = $this->_toInt($record['dbaid']);
+            $this->handlerReadRnd = $this->_toInt($record['handlerreadrnd']);
             $this->handlerUpdate = $this->_toInt($record['handlerupdate']);
             $this->handlerWrite = $this->_toInt($record['handlerwrite']);
             $this->innodbDataFsyncs = $this->_toInt($record['innodbdatafsyncs']);

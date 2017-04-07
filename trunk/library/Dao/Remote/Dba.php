@@ -35,12 +35,12 @@ class Dao_Remote_Dba extends Aomp_Dao_Abstract
         }
 
         if(isset($condition['start'])){
-            $where[] = 'CreateTime >= :start';
+            $where[] = 'SendTime >= :start';
             $bind['start'] = $condition['start'];
         }
 
         if(isset($condition['end'])){
-            $where[] = 'CreateTime <= :end';
+            $where[] = 'SendTime <= :end';
             $bind['end'] = $condition['end'];
         }
 
@@ -59,7 +59,7 @@ class Dao_Remote_Dba extends Aomp_Dao_Abstract
                  . 'TableLocksImmediate AS tablelockstmmediate, TableLocksWait AS tablelockswait, SendTime AS sendtime, Remarks AS remarks, CreateTime AS createtime ';
 
         $sql = <<<SQL
-SELECT {$columns} FROM {$this->_table} WHERE {$where} ORDER BY CreateTime asc
+SELECT {$columns} FROM {$this->_table} WHERE {$where} ORDER BY SendTime asc
 SQL;
 
         try {

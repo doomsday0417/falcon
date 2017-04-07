@@ -142,7 +142,7 @@ class Model_User_Group extends Model_Abstract
             }
 
             //先删除该组的所有权限再添加
-            $daoGroupPower->deleteGroupPowers(array('groupid' => $groupId));
+            $daoGroupPower->deleteGroupPowers(array('groupid' => $group->groupId));
 
             foreach ($param['powers'] as $v){
                 $v['groupid'] = $groupId;
@@ -150,8 +150,20 @@ class Model_User_Group extends Model_Abstract
                 $daoGroupPower->addGroupPowers($v);
             }
 
+            /* @var $daoUser Dao_User_User */
+            $daoUser = $this->getDao('Dao_User_User');
+
+            $users = $daoUser->getUsers(array('groupid' => $group->groupId))->toArray();
+
+            //清空改组成员所有的缓存
+            if(!empty($users)){
+                foreach ($users as $v){
+                    $this->memcache->delete('user_' . $v['userid']);
+                }
+            }
+
             $this->memcache->delete('groups');
-            $this->memcache->delete('user_' . $param['userid']);
+
             return true;
 
         }catch (Aomp_Dao_Exception $e){
