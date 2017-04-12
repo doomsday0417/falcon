@@ -51,12 +51,14 @@ SQL;
 
 
     /**
+     * 获取数据库
      *
      * @param array $condition
+     * @param array $filter
      * @throws Aomp_Dao_Exception
      * @return boolean|Dao_Remote_Record_Db
      */
-    public function getDb($condition)
+    public function getDb($condition, $filter)
     {
         $where = array();
         $bind  = array();
@@ -64,6 +66,16 @@ SQL;
         if(isset($condition['dbid']) && is_int($condition['dbid'])){
             $where[] = 'RD.ID = :id';
             $bind['id'] = $condition['dbid'];
+        }
+
+        if(isset($condition['port']) && is_int($condition['port'])){
+            $where[] = 'RD.Port = :port';
+            $bind['port'] = $condition['port'];
+        }
+
+        if(isset($filter['dbid']) && is_int($filter['dbid'])){
+            $where[] = 'RD.ID != :dbid';
+            $bind['dbid'] = $condition['dbid'];
         }
 
         if(empty($where)){
@@ -111,6 +123,44 @@ SQL;
             $this->db->insert($this->_table, $param);
 
             return (int) $this->db->lastInsertId();
+
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param array $condition
+     * @param array $param
+     * @throws Aomp_Dao_Exception
+     * @return boolean
+     */
+    public function editDb($condition, $param)
+    {
+        if(empty($condition)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = array();
+        $bind  = array();
+
+        if(isset($condition['dbid']) && is_int($condition['dbid'])){
+            $where[] = 'ID = ' . $condition['dbid'];
+        }
+
+        if(empty($where)){
+            throw new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = implode(' AND ', $where);
+
+        try {
+
+            $this->db->update($this->_table, $param, $where);
 
         }catch (Aomp_Db_Exception $e){
             throw new Aomp_Dao_Exception($e->getMessage());

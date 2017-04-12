@@ -72,6 +72,12 @@ SQL;
         }
     }
 
+    /**
+     *
+     * @param array $bind
+     * @throws Aomp_Dao_Exception
+     * @return string|boolean
+     */
     public function addDba($bind)
     {
         try {
@@ -79,6 +85,24 @@ SQL;
             $this->db->insert($this->_table, $bind);
 
             return $this->db->lastInsertId();
+        }catch (Aomp_Db_Exception $e){
+            throw new Aomp_Dao_Exception($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @throws Aomp_Dao_Exception
+     * @return Dao_Remote_Record_Dba|boolean
+     */
+    public function getDbRow()
+    {
+
+        try {
+
+            return Aomp_Dao::record('Dao_Remote_Record_Dba');
+
         }catch (Aomp_Db_Exception $e){
             throw new Aomp_Dao_Exception($e->getMessage());
             return false;

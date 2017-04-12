@@ -32,7 +32,7 @@ abstract class Aomp_Dao
      * @param string $recordClass
      * @param array $fields
      * @param Boolean $allowModifications
-     * @return $recordClass
+     * @return Aomp_Dao_Record
      */
     public static function record($recordClass, $fields = array(), $allowModifications = true)
     {

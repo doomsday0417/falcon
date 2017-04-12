@@ -92,26 +92,46 @@ SQL;
 
     /**
      *
-     * @param unknown $typeId
+     * @param array $condition
      * @throws Aomp_Dao_Exception
      * @return boolean|Dao_Remote_Record_Type
      */
-    public function getType($typeId)
+    public function getType($condition)
     {
-        if(empty($typeId)){
-            throw new Aomp_Dao_Exception('类型ID不能为空');
+        if(empty($condition)){
+            throw new Aomp_Dao_Exception('请输入查询条件');
             return false;
         }
+
+        $where = array();
+        $bind  = array();
+
+        if(isset($condition['typeid']) && is_int($condition['typeid'])){
+            $where[] = 'T.ID = :id';
+            $bind['id'] = $condition['typeid'];
+        }
+
+        if(isset($condition['name'])){
+            $where[] = 'T.Name = :name';
+            $bind['name'] = $condition['name'];
+        }
+
+        if(empty($where)){
+            throw  new Aomp_Dao_Exception('条件不能为空');
+            return false;
+        }
+
+        $where = implode(' AND ', $where);
 
         $sql = <<<SQL
 SELECT T.ID AS typeid, T.Type AS type, T.UserID AS userid, U.Name AS username, T.Name AS typename, T.CreateTime AS createtime
 FROM {$this->_table} T
 LEFT JOIN `user` U ON T.UserID = U.ID
-WHERE T.ID = :ID LIMIT 1
+WHERE {$where}
 SQL;
 
         try {
-            $row = $this->db->fetchRow($sql, array('ID' => $typeId));
+            $row = $this->db->fetchRow($sql, $bind);
 
             return Aomp_Dao::record('Dao_Remote_Record_Type', $row);
 
@@ -120,6 +140,16 @@ SQL;
             throw new Aomp_Dao_Exception($e->getMessage());
             return false;
         }
+    }
+
+    /**
+     *
+     * @param int $typeId
+     * @return boolean|Dao_Remote_Record_Type
+     */
+    public function getTypeById($typeId)
+    {
+        return $this->getType(array('typeid' => $typeId));
     }
 
     /**

@@ -165,11 +165,10 @@ class Aomp_Yaf_Controller_Abstract extends Yaf_Controller_Abstract
      * 验证用户权限
      *
      * @param string $type
-     * @param string $power
-     * @param string $header
      */
-    protected function powerAuth($type, $header = 'get')
+    protected function powerAuth($type)
     {
+        $header = $this->_request->isPost() ? 'json' : 'get';
         if( empty($this->power[$type] & $this->_userPower['power']) ){
             switch ($header) {
                 case 'json':

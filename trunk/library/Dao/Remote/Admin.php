@@ -37,6 +37,11 @@ class Dao_Remote_Admin extends Aomp_Dao_Abstract
             $bind['remoteid'] = $condition['remoteid'];
         }
 
+        if(isset($condition['type'])){
+            $where[] = 'Type = :type';
+            $bind['type'] = $condition['type'];
+        }
+
         if(empty($where)){
             throw new Aomp_Dao_Exception('条件不能为空');
             return false;
@@ -99,6 +104,10 @@ SQL;
 
         if(isset($condition['remoteid']) && is_int($condition['remoteid'])){
             $where[] = 'RemoteID = ' . $condition['remoteid'];
+        }
+
+        if(isset($condition['type'])){
+            $where[] = 'Type = ' . $condition['type'];
         }
 
         if(empty($where)){

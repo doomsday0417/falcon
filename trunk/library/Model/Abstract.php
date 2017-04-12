@@ -23,10 +23,17 @@ abstract class Model_Abstract
      */
     protected $memcache;
 
+    /**
+     *
+     * @var Aomp_Application_Resource_Log
+     */
+    protected $log;
+
     public function __construct()
     {
         $this->session = Yaf_Session::getInstance();
         $this->memcache = Aomp_Yaf_ResourceManager::getResource('memcache');
+        $this->log = Aomp_Yaf_ResourceManager::getResource('log');
     }
 
     /**
