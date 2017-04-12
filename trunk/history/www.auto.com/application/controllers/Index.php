@@ -144,7 +144,8 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
             $adminModel = new Model_Remote_Admin();
 
             $admins = $adminModel->getAdmins(array(
-                'remoteid' => $remote->remoteId
+                'remoteid' => $remote->remoteId,
+                'type'     => 'server'
             ));
 
         }catch (Model_Exception $e){

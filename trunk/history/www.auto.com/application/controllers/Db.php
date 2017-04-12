@@ -77,12 +77,13 @@ class DbController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        $this->powerAuth('write');
+
         if($this->_request->isPost()){
-            $this->powerAuth('write', 'json');
+
 
             //数据库名
             $name = $this->getParam('name');
-
 
             $userId = $this->_userId;
 
@@ -116,8 +117,6 @@ class DbController extends Aomp_Yaf_Controller_Abstract
             $this->json(true, '添加成功');
         }
 
-        $this->powerAuth('write');
-
         //获取数据库类型
         $model = new Model_Remote_Type();
 
@@ -144,6 +143,90 @@ class DbController extends Aomp_Yaf_Controller_Abstract
                    ->assign('types', $types)
                    ->assign('groups', $groups)
                    ->assign('users', $users);
+    }
+
+    public function editAction()
+    {
+        $this->powerAuth('write', 'json');
+
+        $dbId = (int) $this->getParam('dbid', 0);
+
+        if($this->_request->isPost()){
+            //数据库名
+            $name = $this->getParam('name');
+
+            $userId = $this->_userId;
+
+            //管理者
+            $userIds = $this->_request->getPost('userid');
+
+            //端口
+            $port = (int) $this->getParam('port', 0);
+
+            //类型ID
+            $typeId = (int) $this->getParam('typeid', 0);
+
+            //主机ID
+            $remoteId = (int) $this->getParam('remoteid', 0);
+
+            $model = new Model_Remote_Db();
+
+            try {
+                $model->editDb($dbId, array(
+                    'userid' => $userId,
+                    'typeid' => $typeId,
+                    'remoteid' => $remoteId,
+                    'name' => $name,
+                    'userids' => $userIds,
+                    'port' => $port
+                ));
+
+            }catch (Model_Exception $e){
+                $this->json(false, $e->getMessage());
+            }
+
+
+            $this->json(true, '修改成功');
+
+        }
+
+        $model = new Model_Remote_Db();
+
+        $db = $model->getDb(array('dbid' => $dbId));
+
+        //获取数据库类型
+        $model = new Model_Remote_Type();
+
+        $types = $model->getTypes(array(
+            'type' => 'db'
+        ));
+
+        //获取服务器
+        $model = new Model_Remote_Remote();
+
+        $remotes = $model->getRemoteAll();
+
+        //获取权限组
+        $model = new Model_User_Group();
+
+        $groups = $model->getGroups();
+
+        //获取管理员列表
+        $model = new Model_User_User();
+
+        $users = $model->getUserAll();
+
+        //获取管理员
+        $model = new Model_Remote_Admin();
+
+        $root = $model->getAdmins(array('remoteid' => $db->remoteId, 'type' => 'db'));
+
+        $this->view->assign('db', $db->toArray())
+                   ->assign('remotes', $remotes)
+                   ->assign('types', $types)
+                   ->assign('groups', $groups)
+                   ->assign('users', $users)
+                   ->assign('root', $root);
     }
 
 }
