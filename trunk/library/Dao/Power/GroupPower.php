@@ -45,9 +45,9 @@ class Dao_Power_GroupPower extends Aomp_Dao_Abstract
         $sql = <<<SQL
 SELECT {$columns}
 FROM `user_group` UG
-LEFT JOIN {$this->_table} GP ON UG.ID = GP.GroupID
-LEFT JOIN `power` P ON P.ID = GP.PowerID
-WHERE {$where} ORDER BY P.Sort desc
+INNER JOIN {$this->_table} GP ON UG.ID = GP.GroupID
+INNER JOIN `power` P ON P.ID = GP.PowerID
+WHERE {$where} ORDER BY P.Sort DESC
 SQL;
 
         try {

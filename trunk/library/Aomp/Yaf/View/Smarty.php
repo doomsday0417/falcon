@@ -18,7 +18,9 @@ class Aomp_Yaf_View_Smarty implements Yaf_View_Interface
         'template_dir' => '',
         'complie_dir'  => '',
         'left_delimiter'  => '{{',
-        'right_delimiter' => '}}'
+        'right_delimiter' => '}}',
+        'caching' => 1,
+        'debugging' => false
     );
 
     public function __construct($options = array())
@@ -52,6 +54,8 @@ class Aomp_Yaf_View_Smarty implements Yaf_View_Interface
                     break;
                 case 'left_delimiter':
                 case 'right_delimiter':
+                case 'caching' :
+                case 'debugging' :
                     $this->_smarty->{$k} = $this->_options[$k];
                     break;
             }

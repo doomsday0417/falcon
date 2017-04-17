@@ -407,7 +407,7 @@ class Model_User_User extends Model_Abstract
                         }
 
                         //查询账号是否存在
-                        $user = $daoUser->getUser(array('account' => $param['account']));
+                        $user = $daoUser->getUser(array('account' => $param['account']), array('userid' => $condition['userid']));
 
                         if(!empty($user->userId)){
                             $error = '账号存在';

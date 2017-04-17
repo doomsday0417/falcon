@@ -40,10 +40,11 @@ SQL;
      * 获取单个管理员
      *
      * @param array $condition
+     * @param array $filter
      * @throws Aomp_Dao_Exception
      * @return Dao_User_Record_User
      */
-    public function getUser($condition)
+    public function getUser($condition, $filter)
     {
         if(empty($condition)){
             throw new Aomp_Dao_Exception('条件不能为空');
@@ -54,23 +55,28 @@ SQL;
         $bind  = array();
 
         if(isset($condition['account'])){
-            $where[] = 'account = :account';
+            $where[] = 'Account = :account';
             $bind['account']  = $condition['account'];
         }
 
         if(isset($condition['email'])){
-            $where[] = 'email = :email';
+            $where[] = 'Email = :email';
             $bind['email']  = $condition['email'];
         }
 
         if(isset($condition['mobile']) && is_int($condition['mobile'])){
-            $where[] = 'mobile = :mobile';
+            $where[] = 'Mobile = :mobile';
             $bind['mobile']  = $condition['mobile'];
         }
 
         if(isset($condition['userid']) && is_int($condition['userid'])){
-            $where[] = 'id = :id';
+            $where[] = 'ID = :id';
             $bind['id']  = $condition['userid'];
+        }
+
+        if(isset($filter['userid']) && is_int($filter['userid'])){
+            $where[] = 'ID != :userid';
+            $bind['userid'] = $filter['userid'];
         }
 
         if(empty($condition)){

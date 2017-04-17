@@ -135,16 +135,21 @@ class Aomp_User
         if(empty($user)){
             $user = $daoUser->getUser(array('userid' => $userId));
 
-            /* @var $daoGroupPower Dao_Power_GroupPower */
-            $daoGroupPower = $this->getDao('Dao_Power_GroupPower');
 
-            $power = $daoGroupPower->getGroupPowers(array('groupid' => $user->groupId));
 
             $user = $user->toArray();
 
-            $user['power'] = $power->toArray('powerclass');
             $memcache->set('user_' . $userId, $user);
+
+
+
         }
+
+        /* @var $daoGroupPower Dao_Power_GroupPower */
+        $daoGroupPower = $this->getDao('Dao_Power_GroupPower');
+
+        $power = $daoGroupPower->getGroupPowers(array('groupid' => $user['groupid']));
+        $user['power'] = $power->toArray('powerclass');
 
         $attributes = $user;
 

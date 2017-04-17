@@ -76,7 +76,7 @@ class Dao_Remote_Record_Remote extends Aomp_Dao_Record
 
             $this->typeId = $this->_toInt($record['typeid']);
 
-            $this->typeName = $this->_toString($record['typename']);
+            $this->typeName = isset($record['typename']) ? $this->_toString($record['typename']) : null;
 
             $this->userId = $this->_toInt($record['userid']);
 

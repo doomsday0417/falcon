@@ -78,6 +78,10 @@ SQL;
             $bind['dbid'] = $condition['dbid'];
         }
 
+        if(isset($filter['port']) && is_int($filter['port'])){
+            $where[] = 'RD.PORT != :dport';
+            $bind['dport'] = $filter['port'];
+        }
         if(empty($where)){
             throw new Aomp_Dao_Exception('条件不能为空');
             return false;

@@ -28,7 +28,7 @@ class Aomp_Db_Mysql
         //初始化数据连接
         try {
             $dns = 'mysql:dbname=' . $dbname . ';host=' . $host;
-            $this->db = new PDO($dns, $username, $password, array(PDO::ATTR_PERSISTENT => true));
+            $this->db = new PDO($dns, $username, $password, array(PDO::ATTR_PERSISTENT => true, PDO::ATTR_AUTOCOMMIT => 1));
             $this->db->query('SET NAMES ' . $charset);
 
         } catch (PDOException $e) {

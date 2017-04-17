@@ -62,7 +62,7 @@ class Aomp_Application_Resource_Log
             case self::TYPE_NAME_DB :
 
                 /* @var $daoLog Dao_System_Log */
-                $daoLog = Aomp_Dao::factory('Dao_System_Log', 'log');
+                $daoLog = Aomp_Dao::factory('Dao_System_Log');
 
                 $id = $daoLog->addLog($this->_domain, $message, $severity);
 
