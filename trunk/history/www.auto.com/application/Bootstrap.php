@@ -47,6 +47,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract
      */
     public function dispatchErrorHandler($errno, $errstr, $errfile, $errline)
     {
+        /* @var $log Aomp_Application_Resource_Log */
         $log = Aomp_Yaf_ResourceManager::getResource('log');
 
         $log->setLog("Dispatch error with code:{$errno} message: {$errstr} on {$errfile} @ {$errline}");

@@ -54,7 +54,7 @@
                                     </div>
 								</form>
 								<div class="clearBoth">
-								    <a data-type="edit" class="waves-effect waves-light btn">添加</a>
+								    <a data-type="edit" class="waves-effect waves-light btn">修改</a>
 								    <a data-type="delete" href="/user/delete.html?userid={{$root.userid}}" class="waves-effect waves-light btn btn-danger">删除</a>
 								    <a data-type="disabled" href="/user/disable.html?userid={{$root.userid}}&disable={{if $root.isdisable}}0{{else}}1{{/if}}" class="waves-effect waves-light btn btn-danger">{{if $root.isdisable}}解除{{else}}禁止{{/if}}</a>
 								</div>
@@ -90,7 +90,7 @@ $('.btn').on('click', function(){
 
 	$.ajax({
 		type : 'post',
-		url  : url,
+		url  : form.attr('action'),
 		data : form.serializeArray(),
 		dataType : 'json',
 		success  : function(ret){

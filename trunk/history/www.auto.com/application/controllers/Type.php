@@ -29,8 +29,10 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        $this->powerAuth('write');
+
         if($this->_request->isPost()){
-            $this->powerAuth('write', 'json');
+
 
             $name = $this->getParam('name');
 
@@ -47,17 +49,18 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
             $this->json(true, '添加成功');
         }
 
-        $this->powerAuth('write');
     }
 
     public function editAction()
     {
+        $this->powerAuth('write');
+
         $typeId = ($this->getParam('typeid', 0));
 
         $model = new Model_Remote_Type();
 
         if($this->_request->isPost()){
-            $this->powerAuth('write', 'json');
+
 
             $typeName = $this->getParam('name');
 
@@ -73,8 +76,6 @@ class TypeController extends Aomp_Yaf_Controller_Abstract
             }
         }
 
-        //权限
-        $this->powerAuth('write');
 
 
         try {

@@ -6,7 +6,8 @@
                 <h1 class="page-header">{{$classname}}</h1>
                 <ol class="breadcrumb">
                     <li><a href="/group.html">{{$classname}}</a></li>
-                    <li><a>添加</a></li>
+                    <li><a>编辑</a></li>
+                    <li><a>{{$db.name}}</a></li>
                 </ol> 
             </div>
 
@@ -20,17 +21,12 @@
                                 <form class="col s12" action="/db/edit.html" method="post">
                                     <input type="hidden" name="dbid" value="{{$db.dbid}}" />
                                     <div class="row">
-                                        <div class="input-field col s4">
+                                        <div class="input-field col s6">
                                             <input id="last_name" name="name" type="text" class="validate" value="{{$db.name}}">
                                             <label for="last_name" class="active">数据库名</label>
                                         </div>
-
-                                        <div class="input-field col s4">
-                                            <input id="last_name" name="ip" type="text" class="validate" value="{{$db.ip}}">
-                                            <label for="last_name" class="active">IP</label>
-                                        </div>
                                         
-                                        <div class="input-field col s4">
+                                        <div class="input-field col s6">
                                             <input id="last_name" name="port" type="text" class="validate" value="{{$db.port}}">
                                             <label for="last_name" class="active">端口</label>
                                         </div>

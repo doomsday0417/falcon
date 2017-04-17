@@ -27,11 +27,10 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        //权限判断
+        $this->powerAuth('write');
 
         if($this->_request->isPost()){
-
-            //权限判断
-            $this->powerAuth('write', 'json');
 
             $powerName = $this->getParam('powername');
 
@@ -51,18 +50,19 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
         }
 
-        $this->powerAuth('write');
     }
 
     public function editAction()
     {
+        //权限判断
+        $this->powerAuth('write');
+
         $powerId = (int) $this->getParam('powerid', 0);
 
         $model = new Model_Power_Power();
 
         if($this->_request->isPost()){
-            //权限判断
-            $this->powerAuth('write', 'json');
+
 
             $powerName = $this->getParam('powername');
             $powerClass = $this->getParam('powerclass');
@@ -81,9 +81,6 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
             }
         }
 
-        //权限判断
-        $this->powerAuth('write');
-
 
         $power = $model->getPower($powerId);
 
@@ -96,7 +93,7 @@ class PowerController extends Aomp_Yaf_Controller_Abstract
 
     public function deleteAction()
     {
-        $this->powerAuth('delete', 'json');
+        $this->powerAuth('delete');
         $powerId = (int) $this->getParam('powerid', 0);
 
         $model = new Model_Power_Power();

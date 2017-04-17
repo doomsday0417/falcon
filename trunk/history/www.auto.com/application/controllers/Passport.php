@@ -42,7 +42,7 @@ class PassportController extends Aomp_Yaf_Controller_Abstract
     public function logoutAction()
     {
         $this->session->userid = 0;
-echo 123;die;
+
         $this->jump('/passport/login.html');
     }
 }

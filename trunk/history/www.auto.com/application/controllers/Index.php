@@ -26,8 +26,10 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        //判断权限
+        $this->powerAuth('write');
+
         if($this->_request->isPost()){
-            $this->powerAuth('write', 'json');
 
             $name = $this->getParam('name');
 
@@ -60,19 +62,27 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
             }
         }
 
-        $this->powerAuth('write');
 
-        $typeModel = new Model_Remote_Type();
+        try {
 
-        $types = $typeModel->getTypes(array('type' => 'server'));
+            $typeModel = new Model_Remote_Type();
 
-        $model = new Model_User_Group();
+            $types = $typeModel->getTypes(array('type' => 'server'));
 
-        $groups = $model->getGroups();
+            $model = new Model_User_Group();
 
-        //读取全部管理员信息
-        $model = new Model_User_User();
-        $users = $model->getUserAll();
+            $groups = $model->getGroups();
+
+            //读取全部管理员信息
+            $model = new Model_User_User();
+            $users = $model->getUserAll();
+
+        }catch (Model_Exception $e){
+            $this->jump('', $e->getMessage());
+        }
+
+
+
 
         $this->view->assign('types', $types)
                    ->assign('groups', $groups)
@@ -81,13 +91,15 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
 
     public function editAction()
     {
+        $this->powerAuth('write');
+
         $remoteId = (int) $this->getParam('remoteid', 0);
 
         $model = new Model_Remote_Remote();
 
         //POST流程
         if($this->_request->isPost()){
-            $this->powerAuth('write', 'json');
+
 
             $name = $this->getParam('name');
 
@@ -118,7 +130,6 @@ class IndexController extends Aomp_Yaf_Controller_Abstract
         }
 
         //GET流程
-        $this->powerAuth('write');
 
         try {
 

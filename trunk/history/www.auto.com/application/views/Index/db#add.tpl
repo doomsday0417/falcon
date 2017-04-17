@@ -19,17 +19,12 @@
                             <div class="card-content">
                                 <form class="col s12" action="/db/add.html" method="post">
                                     <div class="row">
-                                        <div class="input-field col s4">
+                                        <div class="input-field col s6">
                                             <input id="last_name" name="name" type="text" class="validate">
                                             <label for="last_name">数据库名</label>
                                         </div>
-
-                                        <div class="input-field col s4">
-                                            <input id="last_name" name="ip" type="text" class="validate">
-                                            <label for="last_name">IP</label>
-                                        </div>
                                         
-                                        <div class="input-field col s4">
+                                        <div class="input-field col s6">
                                             <input id="last_name" name="port" type="text" class="validate">
                                             <label for="last_name">端口</label>
                                         </div>

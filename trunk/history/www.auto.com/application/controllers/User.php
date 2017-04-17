@@ -33,9 +33,11 @@ class UserController extends Aomp_Yaf_Controller_Abstract
 
     public function addAction()
     {
+        //权限判断
+        $this->powerAuth('write');
+
         if($this->_request->isPost()){
-            //权限判断
-            $this->powerAuth('write');
+
 
             $account = $this->getParam('account');
             $groupId = (int) $this->getParam('groupid');
@@ -65,8 +67,6 @@ class UserController extends Aomp_Yaf_Controller_Abstract
 
         }
 
-        //权限判断
-        $this->powerAuth('write');
 
         $groupModel = new Model_User_Group();
 
@@ -97,7 +97,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
             $model = new Model_User_User();
 
             try {
-                $userId = $model->addUser(array(
+                $userId = $model->editUser(array('userid' => $userId), array(
                     'account' => $account,
                     'groupid' => $groupId,
                     'password' => $password,
@@ -107,7 +107,7 @@ class UserController extends Aomp_Yaf_Controller_Abstract
                     'email' => $email
                 ));
 
-                $this->json(true, '添加成功');
+                $this->json(true, '修改成功');
             }catch (Model_Exception $e){
                 $this->json(false, $e->getMessage());
             }
@@ -169,6 +169,41 @@ class UserController extends Aomp_Yaf_Controller_Abstract
         }
 
         $this->jump('', '修改成功');
+    }
+
+    public function settingAction()
+    {
+
+        if($this->_request->isPost()){
+
+            $password = $this->getParam('password');
+
+            $nick = $this->getParam('nick');
+
+            $mobile = (int) $this->getParam('mobile');
+
+            $email = $this->getParam('email');
+
+            $model = new Model_User_User();
+
+
+            try {
+                $model->editUser(array('userid' => $this->_userId), array(
+                    'account' => $this->user->account,
+                    'groupid' => $this->user->groupId,
+                    'password' => $password,
+                    'nick' => $nick,
+                    'name' => $this->user->name,
+                    'mobile' => $mobile,
+                    'email' => $email
+                ));
+
+                $this->json(true, '修改成功');
+            }catch (Model_Exception $e){
+                $this->json(false, $e->getMessage());
+            }
+
+        }
     }
 
 }

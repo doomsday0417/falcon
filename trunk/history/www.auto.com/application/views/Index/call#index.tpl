@@ -16,7 +16,6 @@
                         <!-- Advanced Tables -->
                         <div class="card">
                             <div class="card-content">
-                                <a style="margin:10px 0px;" class="btn-floating" href="/call/add.html"><i class="material-icons">add</i></a>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
@@ -31,7 +30,7 @@
                                         </thead>
                                         <tbody>
                                             {{foreach from=$remotes item=item}}
-                                            <tr class="odd gradeX" style="cursor:pointer;" data-remoteid="{{$item.remoteid}}">
+                                            <tr class="odd gradeX" style="cursor:pointer;" data-remoteid="{{$item.remoteid}}" data-type="{{$item.typename}}">
                                                 <td>{{$item.remoteid}}</td>
                                                 <td>{{$item.typename}}</td>
                                                 <td>{{$item.username}}</td>
@@ -64,8 +63,8 @@
 
 $('tbody').find('tr').on('click', function(){
     var remoteid = $(this).data('remoteid')
-    
-    location.href = '/call/edit.html?remoteid=' + remoteid;
+    var type = $(this).data('type');
+    location.href = '/call/add.html?remoteid=' + remoteid + '&type=' + type;
 })
 </script>
 {{/block}}

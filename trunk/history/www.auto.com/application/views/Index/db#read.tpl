@@ -7,6 +7,7 @@
                 <ol class="breadcrumb">
                     <li><a href="/group.html">{{$classname}}</a></li>
                     <li><a>查看</a></li>
+                    <li><a>{{$db.name}}</a></li>
                 </ol> 
                 
             </div>
