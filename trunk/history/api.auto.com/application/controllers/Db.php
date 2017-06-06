@@ -37,4 +37,9 @@ class DbController extends Aomp_Yaf_Controller_Api
         }
 
     }
+
+    public function dbLockLogAction()
+    {
+        $data = $this->_request->getRequest();
+    }
 }

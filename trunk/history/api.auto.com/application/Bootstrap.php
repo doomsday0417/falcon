@@ -31,7 +31,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract
     {
         $dispatcher = Yaf_Dispatcher::getInstance();
         //视图插件
-        $dispatcher->setErrorHandler(array($this, 'dispatchErrorHandler'));
+        $dispatcher->setErrorHandler(array($this, 'dispatchErrorHandler'))
+                   ->registerPlugin(new Aomp_Yaf_Plugin_Session());
     }
 
     /**
@@ -43,6 +44,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract
      */
     public function dispatchErrorHandler($errno, $errstr, $errfile, $errline)
     {
+        /* @var $log Aomp_Application_Resource_Log */
         $log = Aomp_Yaf_ResourceManager::getResource('log');
 
         $log->setLog("Dispatch error with code:{$errno} message: {$errstr} on {$errfile} @ {$errline}");
